@@ -9,19 +9,15 @@ struct FitJourneyApp: App {
     private lazy var workoutService = WorkoutService(networkManager: networkManager, authManager: authManager)
     
     // Create view models
-    @StateObject private var authViewModel: AuthViewModel
-    @StateObject private var workoutViewModel: WorkoutViewModel
-    @StateObject private var goalViewModel: GoalViewModel
+    @State private var authViewModel = AuthViewModel(authManager: AuthManager(networkManager: NetworkManager()))
+    @State private var workoutViewModel = WorkoutViewModel(workoutService: WorkoutService(networkManager: NetworkManager(), authManager: AuthManager(networkManager: NetworkManager())))
+    @State private var goalViewModel = GoalViewModel(goalService: GoalService(networkManager: NetworkManager(), authManager: AuthManager(networkManager: NetworkManager())))
     
     init() {
         // Initialize view models with dependencies
-        let auth = AuthViewModel(authManager: authManager)
-        let workout = WorkoutViewModel(workoutService: workoutService)
-        let goal = GoalViewModel(goalService: goalService)
-        
-        _authViewModel = StateObject(wrappedValue: auth)
-        _workoutViewModel = StateObject(wrappedValue: workout)
-        _goalViewModel = StateObject(wrappedValue: goal)
+        authViewModel = AuthViewModel(authManager: authManager)
+        workoutViewModel = WorkoutViewModel(workoutService: workoutService)
+        goalViewModel = GoalViewModel(goalService: goalService)
     }
     
     var body: some Scene {
@@ -29,10 +25,10 @@ struct FitJourneyApp: App {
             if authViewModel.isAuthenticated {
                 MainTabView(workoutViewModel: workoutViewModel,
                             goalViewModel: goalViewModel)
-                    .environmentObject(authViewModel)
+                    .environment(authViewModel)
             } else {
                 AuthView()
-                    .environmentObject(authViewModel)
+                    .environment(authViewModel)
             }
         }
     }

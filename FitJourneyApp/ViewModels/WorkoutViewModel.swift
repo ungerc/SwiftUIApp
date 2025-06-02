@@ -1,17 +1,18 @@
 import Foundation
 import SwiftUI
 
+@Observable
 @MainActor
-class WorkoutViewModel: ObservableObject {
+class WorkoutViewModel {
     private let workoutService: WorkoutService
     
     init(workoutService: WorkoutService) {
         self.workoutService = workoutService
     }
     
-    @Published var workouts: [Workout] = []
-    @Published var isLoading: Bool = false
-    @Published var errorMessage: String?
+    var workouts: [Workout] = []
+    var isLoading: Bool = false
+    var errorMessage: String?
     
     func fetchWorkouts() async {
         isLoading = true

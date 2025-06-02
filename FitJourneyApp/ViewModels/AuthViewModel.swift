@@ -1,8 +1,9 @@
 import Foundation
 import SwiftUI
 
+@Observable
 @MainActor
-class AuthViewModel: ObservableObject {
+class AuthViewModel {
     private let authManager: AuthManager
     
     init(authManager: AuthManager) {
@@ -12,10 +13,10 @@ class AuthViewModel: ObservableObject {
         self.currentUser = authManager.currentUser
     }
     
-    @Published var isAuthenticated: Bool = false
-    @Published var currentUser: User?
-    @Published var errorMessage: String?
-    @Published var isLoading: Bool = false
+    var isAuthenticated: Bool = false
+    var currentUser: User?
+    var errorMessage: String?
+    var isLoading: Bool = false
     
     func signIn(email: String, password: String) async {
         isLoading = true

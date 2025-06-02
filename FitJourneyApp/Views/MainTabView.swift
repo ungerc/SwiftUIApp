@@ -1,9 +1,9 @@
 import SwiftUI
 
 struct MainTabView: View {
-    @ObservedObject var workoutViewModel: WorkoutViewModel
-    @ObservedObject var goalViewModel: GoalViewModel
-    @EnvironmentObject var authViewModel: AuthViewModel
+    var workoutViewModel: WorkoutViewModel
+    var goalViewModel: GoalViewModel
+    @Environment(AuthViewModel.self) private var authViewModel
     
     init(workoutViewModel: WorkoutViewModel, goalViewModel: GoalViewModel) {
         self.workoutViewModel = workoutViewModel
@@ -13,26 +13,25 @@ struct MainTabView: View {
     var body: some View {
         TabView {
             Text("Dashboard")
-                .environmentObject(workoutViewModel)
-                .environmentObject(goalViewModel)
+                .environment(workoutViewModel)
+                .environment(goalViewModel)
                 .tabItem {
                     Label("Dashboard", systemImage: "chart.bar")
                 }
             
             Text("Workouts")
-                .environmentObject(workoutViewModel)
+                .environment(workoutViewModel)
                 .tabItem {
                     Label("Workouts", systemImage: "figure.run")
                 }
             
             Text("Goals")
-                .environmentObject(goalViewModel)
+                .environment(goalViewModel)
                 .tabItem {
                     Label("Goals", systemImage: "target")
                 }
             
             Text("Profile")
-                .environmentObject(authViewModel)
                 .tabItem {
                     Label("Profile", systemImage: "person")
                 }
@@ -45,19 +44,17 @@ struct MainTabView: View {
     }
 }
 
-struct MainTabView_Previews: PreviewProvider {
-    static var previews: some View {
-        let networkManager = NetworkManager()
-        let authManager = AuthManager(networkManager: networkManager)
-        let workoutService = WorkoutService(networkManager: networkManager, authManager: authManager)
-        let goalService = GoalService(networkManager: networkManager, authManager: authManager)
-        
-        MainTabView(
-            workoutViewModel: WorkoutViewModel(workoutService: workoutService),
-            goalViewModel: GoalViewModel(goalService: goalService)
-        )
-        .environmentObject(AuthViewModel(authManager: authManager))
-    }
+#Preview {
+    let networkManager = NetworkManager()
+    let authManager = AuthManager(networkManager: networkManager)
+    let workoutService = WorkoutService(networkManager: networkManager, authManager: authManager)
+    let goalService = GoalService(networkManager: networkManager, authManager: authManager)
+    
+    return MainTabView(
+        workoutViewModel: WorkoutViewModel(workoutService: workoutService),
+        goalViewModel: GoalViewModel(goalService: goalService)
+    )
+    .environment(AuthViewModel(authManager: authManager))
 }
 import SwiftUI
 

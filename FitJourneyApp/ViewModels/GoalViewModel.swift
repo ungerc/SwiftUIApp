@@ -1,17 +1,18 @@
 import Foundation
 import SwiftUI
 
+@Observable
 @MainActor
-class GoalViewModel: ObservableObject {
+class GoalViewModel {
     private let goalService: GoalService
     
     init(goalService: GoalService) {
         self.goalService = goalService
     }
     
-    @Published var goals: [Goal] = []
-    @Published var isLoading: Bool = false
-    @Published var errorMessage: String?
+    var goals: [Goal] = []
+    var isLoading: Bool = false
+    var errorMessage: String?
     
     func fetchGoals() async {
         isLoading = true

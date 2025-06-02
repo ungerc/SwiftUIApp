@@ -2,7 +2,7 @@ import SwiftUI
 
 struct AuthView: View {
     @State private var isSignIn = true
-    @EnvironmentObject var authViewModel: AuthViewModel
+    @Environment(AuthViewModel.self) private var authViewModel
     
     var body: some View {
         NavigationView {
@@ -53,20 +53,18 @@ struct AuthAlert: Identifiable {
     let message: String
 }
 
-struct AuthView_Previews: PreviewProvider {
-    static var previews: some View {
-        let networkManager = NetworkManager()
-        let authManager = AuthManager(networkManager: networkManager)
-        
-        AuthView()
-            .environmentObject(AuthViewModel(authManager: authManager))
-    }
+#Preview {
+    let networkManager = NetworkManager()
+    let authManager = AuthManager(networkManager: networkManager)
+    
+    return AuthView()
+        .environment(AuthViewModel(authManager: authManager))
 }
 import SwiftUI
 
 struct AuthView: View {
     @State private var isSignIn = true
-    @EnvironmentObject var authViewModel: AuthViewModel
+    @Environment(AuthViewModel.self) private var authViewModel
     
     var body: some View {
         NavigationView {
