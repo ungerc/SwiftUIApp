@@ -13,6 +13,8 @@
 /* Begin PBXFileReference section */
 		1A2B3C4D5E6F7890ABCDEF00 /* FitJourneyApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FitJourneyApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A2B3C4D5E6F7890ABCDEF02 /* FitJourneyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FitJourneyApp.swift; sourceTree = "<group>"; };
+		1A2B3C4D5E6F7890ABCDEF33 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1A2B3C4D5E6F7890ABCDEF30 /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,6 +43,7 @@
 			isa = PBXGroup;
 			children = (
 				1A2B3C4D5E6F7890ABCDEF02 /* FitJourneyApp.swift */,
+				1A2B3C4D5E6F7890ABCDEF33 /* Info.plist */,
 			);
 			path = FitJourneyApp;
 			sourceTree = "<group>";
@@ -51,6 +54,14 @@
 				1A2B3C4D5E6F7890ABCDEF05 /* FitJourneyApp */,
 				1A2B3C4D5E6F7890ABCDEF04 /* Products */,
 			);
+			sourceTree = "<group>";
+		};
+/* Begin PBXGroup section */
+		1A2B3C4D5E6F7890ABCDEF31 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -102,6 +113,9 @@
 				Base,
 			);
 			mainGroup = 1A2B3C4D5E6F7890ABCDEF06;
+			packageReferences = (
+				1A2B3C4D5E6F7890ABCDEF32 /* XCLocalSwiftPackageReference "." */,
+			);
 			productRefGroup = 1A2B3C4D5E6F7890ABCDEF04 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -122,6 +136,29 @@
 		};
 		1A2B3C4D5E6F7890ABCDEF25 /* FitnessTracker */ = {
 			isa = XCSwiftPackageProductDependency;
+			productName = FitnessTracker;
+		};
+/* Begin XCLocalSwiftPackageReference section */
+		1A2B3C4D5E6F7890ABCDEF32 /* XCLocalSwiftPackageReference "." */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = .;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		1A2B3C4D5E6F7890ABCDEF23 /* Networking */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1A2B3C4D5E6F7890ABCDEF32 /* XCLocalSwiftPackageReference "." */;
+			productName = Networking;
+		};
+		1A2B3C4D5E6F7890ABCDEF24 /* Authentication */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1A2B3C4D5E6F7890ABCDEF32 /* XCLocalSwiftPackageReference "." */;
+			productName = Authentication;
+		};
+		1A2B3C4D5E6F7890ABCDEF25 /* FitnessTracker */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1A2B3C4D5E6F7890ABCDEF32 /* XCLocalSwiftPackageReference "." */;
 			productName = FitnessTracker;
 		};
 /* End XCSwiftPackageProductDependency section */
@@ -272,7 +309,7 @@
 				DEVELOPMENT_ASSET_PATHS = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_FILE = FitJourneyApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
