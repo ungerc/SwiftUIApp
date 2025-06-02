@@ -1,5 +1,4 @@
 import SwiftUI
-import FitnessTracker
 
 struct MainTabView: View {
     @ObservedObject var workoutViewModel: WorkoutViewModel
@@ -13,26 +12,26 @@ struct MainTabView: View {
     
     var body: some View {
         TabView {
-            DashboardView()
+            Text("Dashboard")
                 .environmentObject(workoutViewModel)
                 .environmentObject(goalViewModel)
                 .tabItem {
                     Label("Dashboard", systemImage: "chart.bar")
                 }
             
-            WorkoutsView()
+            Text("Workouts")
                 .environmentObject(workoutViewModel)
                 .tabItem {
                     Label("Workouts", systemImage: "figure.run")
                 }
             
-            GoalsView()
+            Text("Goals")
                 .environmentObject(goalViewModel)
                 .tabItem {
                     Label("Goals", systemImage: "target")
                 }
             
-            ProfileView()
+            Text("Profile")
                 .environmentObject(authViewModel)
                 .tabItem {
                     Label("Profile", systemImage: "person")

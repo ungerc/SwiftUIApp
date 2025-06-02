@@ -1,5 +1,4 @@
 import Foundation
-import Authentication
 import SwiftUI
 
 @MainActor

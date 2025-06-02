@@ -1,5 +1,4 @@
 import Foundation
-import FitnessTracker
 import SwiftUI
 
 @MainActor

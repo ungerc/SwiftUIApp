@@ -1,6 +1,4 @@
 import SwiftUI
-import Authentication
-import FitnessTracker
 
 @main
 struct FitJourneyApp: App {
