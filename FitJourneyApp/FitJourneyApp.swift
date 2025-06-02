@@ -1,8 +1,4 @@
 import SwiftUI
-import Networking
-import Auth
-import Goals
-import Workouts
 
 @main
 struct FitJourneyApp: App {

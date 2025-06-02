@@ -7,9 +7,9 @@ let package = Package(
         .iOS(.v15)
     ],
     products: [
-        .library(name: "Networking", path: "Sources/Networking", targets: ["Networking"]),
-        .library(name: "Authentication", path: "Sources/Authentication" targets: ["Authentication"]),
-        .library(name: "FitnessTracker", path: "Sources/FitnessTracker", targets: ["FitnessTracker"]),
+        .library(name: "Networking", targets: ["Networking"]),
+        .library(name: "Authentication", targets: ["Authentication"]),
+        .library(name: "FitnessTracker", targets: ["FitnessTracker"]),
     ],
     dependencies: [],
     targets: [
@@ -18,10 +18,10 @@ let package = Package(
             dependencies: []),
         .target(
             name: "Authentication",
-            dependencies: []),
+            dependencies: ["Networking"]),
         .target(
             name: "FitnessTracker",
-            dependencies: []),
+            dependencies: ["Authentication"]),
         .testTarget(
             name: "NetworkingTests",
             dependencies: ["Networking"]),
