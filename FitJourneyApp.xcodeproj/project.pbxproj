@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -13,8 +13,8 @@
 /* Begin PBXFileReference section */
 		1A2B3C4D5E6F7890ABCDEF00 /* FitJourneyApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FitJourneyApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A2B3C4D5E6F7890ABCDEF02 /* FitJourneyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FitJourneyApp.swift; sourceTree = "<group>"; };
-		1A2B3C4D5E6F7890ABCDEF33 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1A2B3C4D5E6F7890ABCDEF30 /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
+		1A2B3C4D5E6F7890ABCDEF33 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -22,9 +22,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1A2B3C4D5E6F7890ABCDEF20 /* Networking in Frameworks */,
-				1A2B3C4D5E6F7890ABCDEF21 /* Authentication in Frameworks */,
-				1A2B3C4D5E6F7890ABCDEF22 /* FitnessTracker in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -58,7 +55,6 @@
 			);
 			sourceTree = "<group>";
 		};
-/* Begin PBXGroup section */
 		1A2B3C4D5E6F7890ABCDEF31 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -83,9 +79,6 @@
 			);
 			name = FitJourneyApp;
 			packageProductDependencies = (
-				1A2B3C4D5E6F7890ABCDEF23 /* Networking */,
-				1A2B3C4D5E6F7890ABCDEF24 /* Authentication */,
-				1A2B3C4D5E6F7890ABCDEF25 /* FitnessTracker */,
 			);
 			productName = FitJourneyApp;
 			productReference = 1A2B3C4D5E6F7890ABCDEF00 /* FitJourneyApp.app */;
@@ -116,7 +109,7 @@
 			);
 			mainGroup = 1A2B3C4D5E6F7890ABCDEF06;
 			packageReferences = (
-				1A2B3C4D5E6F7890ABCDEF32 /* XCLocalSwiftPackageReference "." */,
+				AA6C6E362DEE22B800123FBD /* XCLocalSwiftPackageReference "../SwiftUIApp" */,
 			);
 			productRefGroup = 1A2B3C4D5E6F7890ABCDEF04 /* Products */;
 			projectDirPath = "";
@@ -126,44 +119,6 @@
 			);
 		};
 /* End PBXProject section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		1A2B3C4D5E6F7890ABCDEF23 /* Networking */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Networking;
-		};
-		1A2B3C4D5E6F7890ABCDEF24 /* Authentication */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Authentication;
-		};
-		1A2B3C4D5E6F7890ABCDEF25 /* FitnessTracker */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = FitnessTracker;
-		};
-/* Begin XCLocalSwiftPackageReference section */
-		1A2B3C4D5E6F7890ABCDEF32 /* XCLocalSwiftPackageReference "." */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = .;
-		};
-/* End XCLocalSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		1A2B3C4D5E6F7890ABCDEF23 /* Networking */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 1A2B3C4D5E6F7890ABCDEF32 /* XCLocalSwiftPackageReference "." */;
-			productName = Networking;
-		};
-		1A2B3C4D5E6F7890ABCDEF24 /* Authentication */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 1A2B3C4D5E6F7890ABCDEF32 /* XCLocalSwiftPackageReference "." */;
-			productName = Authentication;
-		};
-		1A2B3C4D5E6F7890ABCDEF25 /* FitnessTracker */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 1A2B3C4D5E6F7890ABCDEF32 /* XCLocalSwiftPackageReference "." */;
-			productName = FitnessTracker;
-		};
-/* End XCSwiftPackageProductDependency section */
 
 /* Begin PBXResourcesBuildPhase section */
 		1A2B3C4D5E6F7890ABCDEF0A /* Resources */ = {
@@ -379,6 +334,13 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		AA6C6E362DEE22B800123FBD /* XCLocalSwiftPackageReference "../SwiftUIApp" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../SwiftUIApp;
+		};
+/* End XCLocalSwiftPackageReference section */
 	};
 	rootObject = 1A2B3C4D5E6F7890ABCDEF0B /* Project object */;
 }
