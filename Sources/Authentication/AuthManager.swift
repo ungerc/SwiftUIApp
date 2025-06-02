@@ -46,8 +46,6 @@ public class AuthManager {
     public private(set) var currentUser: User?
     private var authToken: String?
     
-    private init() {}
-    
     public var isAuthenticated: Bool {
         return currentUser != nil && authToken != nil
     }
