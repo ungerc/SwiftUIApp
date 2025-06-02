@@ -39,8 +39,9 @@ struct MainTabView: View {
                 }
         }
         .task {
-            await workoutViewModel.fetchWorkouts()
-            await goalViewModel.fetchGoals()
+            async let workouts = workoutViewModel.fetchWorkouts()
+            async let goals = goalViewModel.fetchGoals()
+            _ = await (workouts, goals)
         }
     }
 }

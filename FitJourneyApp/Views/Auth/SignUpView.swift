@@ -36,7 +36,7 @@ struct SignUpView: View {
                 .background(Color(.systemGray6))
                 .cornerRadius(10)
                 .padding(.horizontal, 20)
-                .onChange(of: confirmPassword) { newValue in
+                .onChange(of: confirmPassword) { _, newValue in
                     passwordsMatch = password == newValue || newValue.isEmpty
                 }
             

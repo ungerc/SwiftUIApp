@@ -50,6 +50,7 @@ public class AuthManager {
         return currentUser != nil && authToken != nil
     }
     
+    @discardableResult
     public func signIn(with credentials: AuthCredentials) async throws -> User {
         do {
             let response: AuthResponse = try await networkManager.post(
@@ -66,6 +67,7 @@ public class AuthManager {
         }
     }
     
+    @discardableResult
     public func signUp(with credentials: AuthCredentials, name: String) async throws -> User {
         struct SignUpRequest: Codable {
             let email: String

@@ -26,7 +26,7 @@ struct AddGoalView: View {
                             ).tag(type)
                         }
                     }
-                    .onChange(of: goalType) { newValue in
+                    .onChange(of: goalType) { _, newValue in
                         updateUnitForType(newValue)
                     }
                 }

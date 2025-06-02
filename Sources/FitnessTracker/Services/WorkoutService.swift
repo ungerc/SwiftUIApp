@@ -13,7 +13,7 @@ public class WorkoutService {
     private let baseURL = "https://api.fitjourney.com/workouts"
     
     public func fetchWorkouts() async throws -> [Workout] {
-        guard let token = try? authManager.getToken() else {
+        guard let _ = try? authManager.getToken() else {
             throw AuthError.notAuthenticated
         }
         
@@ -23,7 +23,7 @@ public class WorkoutService {
     }
     
     public func addWorkout(_ workout: Workout) async throws -> Workout {
-        guard let token = try? authManager.getToken() else {
+        guard let _ = try? authManager.getToken() else {
             throw AuthError.notAuthenticated
         }
         
