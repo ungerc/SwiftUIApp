@@ -43,7 +43,7 @@ public class AuthManager {
     }
     private let baseURL = "https://api.fitjourney.com/auth"
     
-    @Published public private(set) var currentUser: User?
+    public private(set) var currentUser: User?
     private var authToken: String?
     
     private init() {}

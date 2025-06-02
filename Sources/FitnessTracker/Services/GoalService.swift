@@ -12,8 +12,6 @@ public class GoalService {
     }
     private let baseURL = "https://api.fitjourney.com/goals"
     
-    private init() {}
-    
     public func fetchGoals() async throws -> [Goal] {
         guard let token = try? authManager.getToken() else {
             throw AuthError.notAuthenticated

@@ -1,25 +1,20 @@
 import Foundation
 import Authentication
-import Combine
 
 class AuthViewModel: ObservableObject {
     private let authManager: AuthManager
     
     init(authManager: AuthManager) {
         self.authManager = authManager
+        // Initialize with values from authManager
+        self.isAuthenticated = authManager.isAuthenticated
+        self.currentUser = authManager.currentUser
     }
     
     @Published var isAuthenticated: Bool = false
     @Published var currentUser: User?
     @Published var errorMessage: String?
     @Published var isLoading: Bool = false
-    
-    init() {
-        // In a real app, you might check for a stored token here
-        // and try to restore the session
-        self.isAuthenticated = authManager.isAuthenticated
-        self.currentUser = authManager.currentUser
-    }
     
     func signIn(email: String, password: String) async {
         DispatchQueue.main.async {

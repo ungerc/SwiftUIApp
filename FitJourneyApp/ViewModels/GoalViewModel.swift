@@ -1,6 +1,5 @@
 import Foundation
 import FitnessTracker
-import Combine
 
 class GoalViewModel: ObservableObject {
     private let goalService: GoalService
