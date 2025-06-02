@@ -51,8 +51,10 @@
 		1A2B3C4D5E6F7890ABCDEF06 = {
 			isa = PBXGroup;
 			children = (
+				1A2B3C4D5E6F7890ABCDEF30 /* Package.swift */,
 				1A2B3C4D5E6F7890ABCDEF05 /* FitJourneyApp */,
 				1A2B3C4D5E6F7890ABCDEF04 /* Products */,
+				1A2B3C4D5E6F7890ABCDEF31 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
