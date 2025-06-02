@@ -20,6 +20,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1A2B3C4D5E6F7890ABCDEF20 /* Networking in Frameworks */,
+				1A2B3C4D5E6F7890ABCDEF21 /* Authentication in Frameworks */,
+				1A2B3C4D5E6F7890ABCDEF22 /* FitnessTracker in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -66,6 +69,11 @@
 			dependencies = (
 			);
 			name = FitJourneyApp;
+			packageProductDependencies = (
+				1A2B3C4D5E6F7890ABCDEF23 /* Networking */,
+				1A2B3C4D5E6F7890ABCDEF24 /* Authentication */,
+				1A2B3C4D5E6F7890ABCDEF25 /* FitnessTracker */,
+			);
 			productName = FitJourneyApp;
 			productReference = 1A2B3C4D5E6F7890ABCDEF00 /* FitJourneyApp.app */;
 			productType = "com.apple.product-type.application";
@@ -102,6 +110,21 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		1A2B3C4D5E6F7890ABCDEF23 /* Networking */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Networking;
+		};
+		1A2B3C4D5E6F7890ABCDEF24 /* Authentication */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Authentication;
+		};
+		1A2B3C4D5E6F7890ABCDEF25 /* FitnessTracker */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FitnessTracker;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin PBXResourcesBuildPhase section */
 		1A2B3C4D5E6F7890ABCDEF0A /* Resources */ = {

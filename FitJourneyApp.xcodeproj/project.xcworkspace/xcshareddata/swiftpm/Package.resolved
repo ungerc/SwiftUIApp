@@ -1,0 +1,14 @@
+{
+  "pins" : [
+    {
+      "identity" : "fitjourney",
+      "kind" : "localSourceControl",
+      "location" : ".",
+      "state" : {
+        "branch" : "main",
+        "revision" : "HEAD"
+      }
+    }
+  ],
+  "version" : 2
+}
