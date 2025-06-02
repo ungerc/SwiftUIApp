@@ -1,6 +1,8 @@
 import Foundation
 import FitnessTracker
+import SwiftUI
 
+@MainActor
 class WorkoutViewModel: ObservableObject {
     private let workoutService: WorkoutService
     
@@ -13,45 +15,31 @@ class WorkoutViewModel: ObservableObject {
     @Published var errorMessage: String?
     
     func fetchWorkouts() async {
-        DispatchQueue.main.async {
-            self.isLoading = true
-            self.errorMessage = nil
-        }
+        isLoading = true
+        errorMessage = nil
         
         do {
             let fetchedWorkouts = try await workoutService.fetchWorkouts()
-            
-            DispatchQueue.main.async {
-                self.workouts = fetchedWorkouts
-                self.isLoading = false
-            }
+            workouts = fetchedWorkouts
+            isLoading = false
         } catch {
-            DispatchQueue.main.async {
-                self.errorMessage = "Failed to fetch workouts: \(error.localizedDescription)"
-                self.isLoading = false
-            }
+            errorMessage = "Failed to fetch workouts: \(error.localizedDescription)"
+            isLoading = false
         }
     }
     
     func addWorkout(_ workout: Workout) async {
-        DispatchQueue.main.async {
-            self.isLoading = true
-            self.errorMessage = nil
-        }
+        isLoading = true
+        errorMessage = nil
         
         do {
             let newWorkout = try await workoutService.addWorkout(workout)
-            
-            DispatchQueue.main.async {
-                self.workouts.append(newWorkout)
-                self.workouts.sort { $0.date > $1.date }
-                self.isLoading = false
-            }
+            workouts.append(newWorkout)
+            workouts.sort { $0.date > $1.date }
+            isLoading = false
         } catch {
-            DispatchQueue.main.async {
-                self.errorMessage = "Failed to add workout: \(error.localizedDescription)"
-                self.isLoading = false
-            }
+            errorMessage = "Failed to add workout: \(error.localizedDescription)"
+            isLoading = false
         }
     }
     

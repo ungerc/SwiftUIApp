@@ -1,6 +1,8 @@
 import Foundation
 import Authentication
+import SwiftUI
 
+@MainActor
 class AuthViewModel: ObservableObject {
     private let authManager: AuthManager
     
@@ -17,48 +19,36 @@ class AuthViewModel: ObservableObject {
     @Published var isLoading: Bool = false
     
     func signIn(email: String, password: String) async {
-        DispatchQueue.main.async {
-            self.isLoading = true
-            self.errorMessage = nil
-        }
+        isLoading = true
+        errorMessage = nil
         
         do {
             let credentials = AuthCredentials(email: email, password: password)
             let user = try await authManager.signIn(with: credentials)
             
-            DispatchQueue.main.async {
-                self.currentUser = user
-                self.isAuthenticated = true
-                self.isLoading = false
-            }
+            currentUser = user
+            isAuthenticated = true
+            isLoading = false
         } catch {
-            DispatchQueue.main.async {
-                self.errorMessage = "Failed to sign in. Please check your credentials."
-                self.isLoading = false
-            }
+            errorMessage = "Failed to sign in. Please check your credentials."
+            isLoading = false
         }
     }
     
     func signUp(name: String, email: String, password: String) async {
-        DispatchQueue.main.async {
-            self.isLoading = true
-            self.errorMessage = nil
-        }
+        isLoading = true
+        errorMessage = nil
         
         do {
             let credentials = AuthCredentials(email: email, password: password)
             let user = try await authManager.signUp(with: credentials, name: name)
             
-            DispatchQueue.main.async {
-                self.currentUser = user
-                self.isAuthenticated = true
-                self.isLoading = false
-            }
+            currentUser = user
+            isAuthenticated = true
+            isLoading = false
         } catch {
-            DispatchQueue.main.async {
-                self.errorMessage = "Failed to create account. Please try again."
-                self.isLoading = false
-            }
+            errorMessage = "Failed to create account. Please try again."
+            isLoading = false
         }
     }
     

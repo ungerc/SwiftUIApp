@@ -17,9 +17,13 @@ struct FitJourneyApp: App {
     
     init() {
         // Initialize view models with dependencies
-        _authViewModel = StateObject(wrappedValue: AuthViewModel(authManager: authManager))
-        _workoutViewModel = StateObject(wrappedValue: WorkoutViewModel(workoutService: workoutService))
-        _goalViewModel = StateObject(wrappedValue: GoalViewModel(goalService: goalService))
+        let auth = AuthViewModel(authManager: authManager)
+        let workout = WorkoutViewModel(workoutService: workoutService)
+        let goal = GoalViewModel(goalService: goalService)
+        
+        _authViewModel = StateObject(wrappedValue: auth)
+        _workoutViewModel = StateObject(wrappedValue: workout)
+        _goalViewModel = StateObject(wrappedValue: goal)
     }
     
     var body: some Scene {
