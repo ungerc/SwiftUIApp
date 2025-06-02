@@ -3,7 +3,7 @@
     {
       "identity" : "fitjourney",
       "kind" : "localSourceControl",
-      "location" : ".",
+      "location" : "file:///Users/christian/Development/SwiftUIApp",
       "state" : {
         "branch" : "main",
         "revision" : "HEAD"
