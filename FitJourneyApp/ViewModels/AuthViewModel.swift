@@ -7,6 +7,7 @@ class AuthViewModel: ObservableObject {
     
     init(authManager: AuthManager) {
         self.authManager = authManager
+    }
     
     @Published var isAuthenticated: Bool = false
     @Published var currentUser: User?
