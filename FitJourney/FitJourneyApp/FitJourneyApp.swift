@@ -4,7 +4,7 @@ import FitnessTracker
 
 @main
 struct FitJourneyApp: App {
-    @State private var authViewModel = AuthViewModel()
+    @StateObject private var authViewModel = AuthViewModel()
     
     var body: some Scene {
         WindowGroup {
