@@ -150,7 +150,11 @@ struct AddGoalView: View {
 
 struct AddGoalView_Previews: PreviewProvider {
     static var previews: some View {
+        let networkManager = NetworkManager()
+        let authManager = AuthManager(networkManager: networkManager)
+        let goalService = GoalService(networkManager: networkManager, authManager: authManager)
+        
         AddGoalView()
-            .environmentObject(GoalViewModel())
+            .environmentObject(GoalViewModel(goalService: goalService))
     }
 }

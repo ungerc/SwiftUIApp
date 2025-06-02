@@ -141,6 +141,10 @@ struct GoalDetailView: View {
 
 struct GoalDetailView_Previews: PreviewProvider {
     static var previews: some View {
+        let networkManager = NetworkManager()
+        let authManager = AuthManager(networkManager: networkManager)
+        let goalService = GoalService(networkManager: networkManager, authManager: authManager)
+        
         NavigationView {
             GoalDetailView(
                 goal: Goal(
@@ -153,7 +157,7 @@ struct GoalDetailView_Previews: PreviewProvider {
                     type: .weight
                 )
             )
-            .environmentObject(GoalViewModel())
+            .environmentObject(GoalViewModel(goalService: goalService))
         }
     }
 }

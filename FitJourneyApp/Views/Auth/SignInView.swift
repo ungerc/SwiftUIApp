@@ -52,7 +52,10 @@ struct SignInView: View {
 
 struct SignInView_Previews: PreviewProvider {
     static var previews: some View {
+        let networkManager = NetworkManager()
+        let authManager = AuthManager(networkManager: networkManager)
+        
         SignInView()
-            .environmentObject(AuthViewModel())
+            .environmentObject(AuthViewModel(authManager: authManager))
     }
 }

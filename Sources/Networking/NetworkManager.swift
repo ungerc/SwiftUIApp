@@ -8,9 +8,7 @@ public enum NetworkError: Error {
 }
 
 public class NetworkManager {
-    public static let shared = NetworkManager()
-    
-    private init() {}
+    public init() {}
     
     public func fetch<T: Decodable>(from urlString: String) async throws -> T {
         guard let url = URL(string: urlString) else {

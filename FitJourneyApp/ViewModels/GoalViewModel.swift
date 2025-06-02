@@ -3,7 +3,11 @@ import FitnessTracker
 import Combine
 
 class GoalViewModel: ObservableObject {
-    private let goalService = GoalService.shared
+    private let goalService: GoalService
+    
+    init(goalService: GoalService) {
+        self.goalService = goalService
+    }
     
     @Published var goals: [Goal] = []
     @Published var isLoading: Bool = false

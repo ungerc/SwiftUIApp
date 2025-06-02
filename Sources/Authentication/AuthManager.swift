@@ -36,9 +36,11 @@ public struct AuthResponse: Codable {
 }
 
 public class AuthManager {
-    public static let shared = AuthManager()
+    private let networkManager: NetworkManager
     
-    private let networkManager = NetworkManager.shared
+    public init(networkManager: NetworkManager) {
+        self.networkManager = networkManager
+    }
     private let baseURL = "https://api.fitjourney.com/auth"
     
     @Published public private(set) var currentUser: User?

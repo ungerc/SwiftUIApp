@@ -163,7 +163,11 @@ struct WorkoutCard: View {
 
 struct WorkoutsView_Previews: PreviewProvider {
     static var previews: some View {
+        let networkManager = NetworkManager()
+        let authManager = AuthManager(networkManager: networkManager)
+        let workoutService = WorkoutService(networkManager: networkManager, authManager: authManager)
+        
         WorkoutsView()
-            .environmentObject(WorkoutViewModel())
+            .environmentObject(WorkoutViewModel(workoutService: workoutService))
     }
 }

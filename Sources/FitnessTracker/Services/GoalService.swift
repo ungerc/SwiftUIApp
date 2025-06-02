@@ -3,10 +3,13 @@ import Networking
 import Authentication
 
 public class GoalService {
-    public static let shared = GoalService()
+    private let networkManager: NetworkManager
+    private let authManager: AuthManager
     
-    private let networkManager = NetworkManager.shared
-    private let authManager = AuthManager.shared
+    public init(networkManager: NetworkManager, authManager: AuthManager) {
+        self.networkManager = networkManager
+        self.authManager = authManager
+    }
     private let baseURL = "https://api.fitjourney.com/goals"
     
     private init() {}

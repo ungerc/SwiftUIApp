@@ -2,9 +2,14 @@ import SwiftUI
 import FitnessTracker
 
 struct MainTabView: View {
-    @StateObject private var workoutViewModel = WorkoutViewModel()
-    @StateObject private var goalViewModel = GoalViewModel()
+    @ObservedObject var workoutViewModel: WorkoutViewModel
+    @ObservedObject var goalViewModel: GoalViewModel
     @EnvironmentObject var authViewModel: AuthViewModel
+    
+    init(workoutViewModel: WorkoutViewModel, goalViewModel: GoalViewModel) {
+        self.workoutViewModel = workoutViewModel
+        self.goalViewModel = goalViewModel
+    }
     
     var body: some View {
         TabView {
@@ -42,7 +47,15 @@ struct MainTabView: View {
 
 struct MainTabView_Previews: PreviewProvider {
     static var previews: some View {
-        MainTabView()
-            .environmentObject(AuthViewModel())
+        let networkManager = NetworkManager()
+        let authManager = AuthManager(networkManager: networkManager)
+        let workoutService = WorkoutService(networkManager: networkManager, authManager: authManager)
+        let goalService = GoalService(networkManager: networkManager, authManager: authManager)
+        
+        MainTabView(
+            workoutViewModel: WorkoutViewModel(workoutService: workoutService),
+            goalViewModel: GoalViewModel(goalService: goalService)
+        )
+        .environmentObject(AuthViewModel(authManager: authManager))
     }
 }

@@ -79,7 +79,10 @@ struct SignUpView: View {
 
 struct SignUpView_Previews: PreviewProvider {
     static var previews: some View {
+        let networkManager = NetworkManager()
+        let authManager = AuthManager(networkManager: networkManager)
+        
         SignUpView()
-            .environmentObject(AuthViewModel())
+            .environmentObject(AuthViewModel(authManager: authManager))
     }
 }

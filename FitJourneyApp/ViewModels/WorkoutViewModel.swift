@@ -3,7 +3,11 @@ import FitnessTracker
 import Combine
 
 class WorkoutViewModel: ObservableObject {
-    private let workoutService = WorkoutService.shared
+    private let workoutService: WorkoutService
+    
+    init(workoutService: WorkoutService) {
+        self.workoutService = workoutService
+    }
     
     @Published var workouts: [Workout] = []
     @Published var isLoading: Bool = false

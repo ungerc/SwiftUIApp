@@ -3,7 +3,10 @@ import Authentication
 import Combine
 
 class AuthViewModel: ObservableObject {
-    private let authManager = AuthManager.shared
+    private let authManager: AuthManager
+    
+    init(authManager: AuthManager) {
+        self.authManager = authManager
     
     @Published var isAuthenticated: Bool = false
     @Published var currentUser: User?
