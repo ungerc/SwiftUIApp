@@ -29,7 +29,8 @@ struct FitJourneyApp: App {
     var body: some Scene {
         WindowGroup {
             if authViewModel.isAuthenticated {
-                MainTabView(workoutViewModel: workoutViewModel, goalViewModel: goalViewModel)
+                MainTabView(workoutViewModel: workoutViewModel,
+                            goalViewModel: goalViewModel)
                     .environmentObject(authViewModel)
             } else {
                 AuthView()
