@@ -11,9 +11,9 @@ struct FitJourneyApp: App {
     private lazy var workoutService = WorkoutService(networkManager: networkManager, authManager: authManager)
     
     // Create view models
-    @StateObject private var authViewModel: AuthViewModel
-    @StateObject private var workoutViewModel: WorkoutViewModel
-    @StateObject private var goalViewModel: GoalViewModel
+    @State private var authViewModel: AuthViewModel
+    @State private var workoutViewModel: WorkoutViewModel
+    @State private var goalViewModel: GoalViewModel
     
     init() {
         // Initialize view models with dependencies
@@ -21,9 +21,9 @@ struct FitJourneyApp: App {
         let workout = WorkoutViewModel(workoutService: workoutService)
         let goal = GoalViewModel(goalService: goalService)
         
-        _authViewModel = StateObject(wrappedValue: auth)
-        _workoutViewModel = StateObject(wrappedValue: workout)
-        _goalViewModel = StateObject(wrappedValue: goal)
+        _authViewModel = State(wrappedValue: auth)
+        _workoutViewModel = State(wrappedValue: workout)
+        _goalViewModel = State(wrappedValue: goal)
     }
     
     var body: some Scene {
