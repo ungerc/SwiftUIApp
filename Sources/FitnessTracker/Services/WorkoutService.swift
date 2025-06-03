@@ -1,10 +1,10 @@
 import Foundation
 
 public class WorkoutService: WorkoutServiceProtocol {
-    private let networkService: NetworkServiceProtocol
+    private let networkService: FitnessNetworkService
     private let authService: AuthServiceProtocol
     
-    public init(networkService: NetworkServiceProtocol, authService: AuthServiceProtocol) {
+    public init(networkService: FitnessNetworkService, authService: AuthServiceProtocol) {
         self.networkService = networkService
         self.authService = authService
     }
