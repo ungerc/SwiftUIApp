@@ -1,12 +1,12 @@
 import SwiftUI
 
 struct SignUpView: View {
+    @Environment(AuthViewModel.self) private var authViewModel
+
     @State private var name = ""
     @State private var email = ""
     @State private var password = ""
     @State private var confirmPassword = ""
-    @EnvironmentObject var authViewModel: AuthViewModel
-    
     @State private var passwordsMatch = true
     
     var body: some View {
@@ -83,6 +83,6 @@ struct SignUpView_Previews: PreviewProvider {
         let authManager = AuthManager(networkManager: networkManager)
         
         SignUpView()
-            .environmentObject(AuthViewModel(authManager: authManager))
+            .environment(AuthViewModel(authManager: authManager))
     }
 }

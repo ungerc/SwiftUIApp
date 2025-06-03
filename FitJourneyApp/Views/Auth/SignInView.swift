@@ -3,8 +3,8 @@ import SwiftUI
 struct SignInView: View {
     @State private var email = ""
     @State private var password = ""
-    @EnvironmentObject var authViewModel: AuthViewModel
-    
+    @Environment(AuthViewModel.self) private var authViewModel
+
     var body: some View {
         VStack(spacing: 20) {
             TextField("Email", text: $email)
@@ -56,6 +56,6 @@ struct SignInView_Previews: PreviewProvider {
         let authManager = AuthManager(networkManager: networkManager)
         
         SignInView()
-            .environmentObject(AuthViewModel(authManager: authManager))
+            .environment(AuthViewModel(authManager: authManager))
     }
 }
