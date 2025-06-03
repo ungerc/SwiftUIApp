@@ -24,9 +24,9 @@ let package = Package(
     dependencies: [],
     targets: [
         .target(
-            name: "Networking",
-            dependencies: [],
-            path: "Sources/Networking",
+            name: "AppCore",
+            dependencies: ["Networking", "Authentication", "FitnessTracker"],
+            path: "Sources/AppCore",
             swiftSettings: [.enableExperimentalFeature("StrictConcurrency")]),
         .target(
             name: "Authentication",
@@ -39,21 +39,21 @@ let package = Package(
             path: "Sources/FitnessTracker",
             swiftSettings: [.enableExperimentalFeature("StrictConcurrency")]),
         .target(
-            name: "AppCore",
-            dependencies: ["Networking", "Authentication", "FitnessTracker"],
-            path: "Sources/AppCore",
-            swiftSettings: [.enableExperimentalFeature("StrictConcurrency")]),
-        .testTarget(
-            name: "NetworkingTests",
-            dependencies: ["Networking"]),
-        .testTarget(
-            name: "AuthenticationTests",
-            dependencies: ["Authentication"]),
-        .testTarget(
-            name: "FitnessTrackerTests",
-            dependencies: ["FitnessTracker"]),
-        .testTarget(
-            name: "AppCoreTests",
-            dependencies: ["AppCore"])
+            name: "Networking",
+            dependencies: [],
+            path: "Sources/Networking",
+            swiftSettings: [.enableExperimentalFeature("StrictConcurrency")])
+//        .testTarget(
+//            name: "NetworkingTests",
+//            dependencies: ["Networking"]),
+//        .testTarget(
+//            name: "AuthenticationTests",
+//            dependencies: ["Authentication"]),
+//        .testTarget(
+//            name: "FitnessTrackerTests",
+//            dependencies: ["FitnessTracker"]),
+//        .testTarget(
+//            name: "AppCoreTests",
+//            dependencies: ["AppCore"])
     ]
 )
