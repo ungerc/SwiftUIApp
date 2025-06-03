@@ -1,5 +1,8 @@
 import Foundation
-import Networking
+
+public protocol AuthNetworkService {
+    func post<T: Encodable, U: Decodable>(to urlString: String, body: T) async throws -> U
+}
 
 public enum AuthError: Error {
     case signInFailed
@@ -36,9 +39,9 @@ public struct AuthResponse: Codable {
 }
 
 public class AuthManager: AuthServiceProtocol {
-    private let networkService: NetworkServiceProtocol
+    private let networkService: AuthNetworkService
     
-    public init(networkService: NetworkServiceProtocol) {
+    public init(networkService: AuthNetworkService) {
         self.networkService = networkService
     }
     private let baseURL = "https://api.fitjourney.com/auth"
