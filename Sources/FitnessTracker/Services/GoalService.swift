@@ -49,6 +49,15 @@ public class GoalService: GoalServiceProtocol {
         )
     }
     
+    public func deleteGoal(id: String) async throws {
+        guard let _ = try? authService.getToken() else {
+            throw FitnessAuthError.notAuthenticated
+        }
+        
+        // In a real app, you would send a delete request to the server
+        // For now, we'll just return
+    }
+    
     // Mock data for demonstration
     private var mockGoals: [Goal] {
         [

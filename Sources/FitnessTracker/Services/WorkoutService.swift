@@ -30,6 +30,15 @@ public class WorkoutService: WorkoutServiceProtocol {
         return workout
     }
     
+    public func deleteWorkout(id: String) async throws {
+        guard let _ = try? authService.getToken() else {
+            throw FitnessAuthError.notAuthenticated
+        }
+        
+        // In a real app, you would send a delete request to the server
+        // For now, we'll just return
+    }
+    
     // Mock data for demonstration
     private var mockWorkouts: [Workout] {
         [
