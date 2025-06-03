@@ -7,10 +7,19 @@ let package = Package(
         .iOS(.v17)
     ],
     products: [
-        .library(name: "Networking", targets: ["Networking"]),
-        .library(name: "Authentication", targets: ["Authentication"]),
-        .library(name: "FitnessTracker", targets: ["FitnessTracker"]),
-        .library(name: "AppCore", targets: ["AppCore"]),
+        .library(
+            name: "Networking",
+            targets: ["Networking"]),
+        .library(
+            name: "Authentication",
+            targets: ["Authentication"]),
+        .library(
+            name: "FitnessTracker",
+            targets: ["FitnessTracker"]),
+        .library(
+            name: "AppCore",
+            type: .dynamic,
+            targets: ["AppCore"]),
     ],
     dependencies: [],
     targets: [
@@ -18,22 +27,22 @@ let package = Package(
             name: "Networking",
             dependencies: [],
             path: "Sources/Networking",
-            exclude: []),
+            swiftSettings: [.enableExperimentalFeature("StrictConcurrency")]),
         .target(
             name: "Authentication",
             dependencies: ["Networking"],
             path: "Sources/Authentication",
-            exclude: []),
+            swiftSettings: [.enableExperimentalFeature("StrictConcurrency")]),
         .target(
             name: "FitnessTracker",
             dependencies: ["Networking", "Authentication"],
             path: "Sources/FitnessTracker",
-            exclude: []),
+            swiftSettings: [.enableExperimentalFeature("StrictConcurrency")]),
         .target(
             name: "AppCore",
             dependencies: ["Networking", "Authentication", "FitnessTracker"],
             path: "Sources/AppCore",
-            exclude: []),
+            swiftSettings: [.enableExperimentalFeature("StrictConcurrency")]),
         .testTarget(
             name: "NetworkingTests",
             dependencies: ["Networking"]),
