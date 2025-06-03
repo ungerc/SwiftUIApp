@@ -18,10 +18,10 @@ let package = Package(
             dependencies: []),
         .target(
             name: "Authentication",
-            dependencies: ["Networking"]),
+            dependencies: []),
         .target(
             name: "FitnessTracker",
-            dependencies: ["Authentication"]),
+            dependencies: []),
         .testTarget(
             name: "NetworkingTests",
             dependencies: ["Networking"]),
