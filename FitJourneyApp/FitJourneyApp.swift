@@ -3,28 +3,41 @@ import AppCore
 
 @main
 struct FitJourneyApp: App {
-    // Create service provider
-    private let serviceProvider = ServiceProvider()
+    // Create the service factory
+    private let serviceFactory = ServiceFactory()
     
-    // Create view models
-    @State private var authViewModel = AuthViewModel(authAdapter: serviceProvider.authAdapter)
-    @State private var workoutViewModel = WorkoutViewModel(workoutAdapter: serviceProvider.workoutAdapter)
-    @State private var goalViewModel = GoalViewModel(goalAdapter: serviceProvider.goalAdapter)
-    
-    // No need for custom initializer as we're initializing directly in the property declarations
+    // Create view models with dependencies
+    @State private var authViewModel = AuthViewModel()
+    @State private var workoutViewModel = WorkoutViewModel()
+    @State private var goalViewModel = GoalViewModel()
     
     var body: some Scene {
         WindowGroup {
-
-                //            if authViewModel.isAuthenticated {
-                MainTabView(workoutViewModel: workoutViewModel,
-                            goalViewModel: goalViewModel)
+            ContentView()
                 .environment(authViewModel)
-                
-                //            } else {
-                //                AuthView()
-                //                    .environment(authViewModel)
-                //            }
+                .environment(workoutViewModel)
+                .environment(goalViewModel)
+                .onAppear {
+                    // Initialize view models with services
+                    authViewModel.initialize(authManager: serviceFactory.makeAuthManager())
+                    workoutViewModel.initialize(workoutService: serviceFactory.makeWorkoutService())
+                    goalViewModel.initialize(goalService: serviceFactory.makeGoalService())
+                }
+        }
+    }
+}
+
+// Main content view that handles authentication state
+struct ContentView: View {
+    @Environment(AuthViewModel.self) private var authViewModel
+    
+    var body: some View {
+        Group {
+            if authViewModel.isAuthenticated {
+                MainTabView()
+            } else {
+                AuthView()
+            }
         }
     }
 }

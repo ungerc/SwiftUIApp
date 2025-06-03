@@ -19,10 +19,18 @@ public class ServiceFactory {
         return WorkoutService(workoutAdapter: applicationServiceFactory.makeWorkoutAdapter())
     }
     
+    // Create a GoalService using the adapter
+    public func makeGoalService() -> GoalService {
+        return GoalService(goalAdapter: applicationServiceFactory.makeGoalAdapter())
+    }
+    
     // Create an AuthManager using the adapter
     public func makeAuthManager() -> AuthManager {
         return AuthManager(authAdapter: applicationServiceFactory.makeAuthAdapter())
     }
     
-    // Add other service factory methods as needed
+    // Create a NetworkManager using the adapter
+    public func makeNetworkManager() -> NetworkManager {
+        return NetworkManager(networkAdapter: applicationServiceFactory.makeNetworkAdapter())
+    }
 }
