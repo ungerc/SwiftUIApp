@@ -2,9 +2,9 @@ import Foundation
 
 public class WorkoutService: WorkoutServiceProtocol {
     private let networkService: FitnessNetworkService
-    private let authService: AuthServiceProtocol
+    private let authService: FitnessAuthService
     
-    public init(networkService: FitnessNetworkService, authService: AuthServiceProtocol) {
+    public init(networkService: FitnessNetworkService, authService: FitnessAuthService) {
         self.networkService = networkService
         self.authService = authService
     }
@@ -12,7 +12,7 @@ public class WorkoutService: WorkoutServiceProtocol {
     
     public func fetchWorkouts() async throws -> [Workout] {
         guard let _ = try? authService.getToken() else {
-            throw AuthError.notAuthenticated
+            throw FitnessAuthError.notAuthenticated
         }
         
         // In a real app, you would include the token in the request
@@ -22,7 +22,7 @@ public class WorkoutService: WorkoutServiceProtocol {
     
     public func addWorkout(_ workout: Workout) async throws -> Workout {
         guard let _ = try? authService.getToken() else {
-            throw AuthError.notAuthenticated
+            throw FitnessAuthError.notAuthenticated
         }
         
         // In a real app, you would send the workout to the server

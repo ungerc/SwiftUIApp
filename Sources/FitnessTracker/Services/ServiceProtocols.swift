@@ -19,3 +19,12 @@ public protocol FitnessNetworkService {
     func put<T: Encodable, U: Decodable>(to urlString: String, body: T) async throws -> U
     func delete(from urlString: String) async throws
 }
+
+public protocol FitnessAuthService {
+    var isAuthenticated: Bool { get }
+    func getToken() throws -> String
+}
+
+public enum FitnessAuthError: Error {
+    case notAuthenticated
+}

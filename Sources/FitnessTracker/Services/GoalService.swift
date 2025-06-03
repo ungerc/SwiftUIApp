@@ -2,9 +2,9 @@ import Foundation
 
 public class GoalService: GoalServiceProtocol {
     private let networkService: FitnessNetworkService
-    private let authService: AuthServiceProtocol
+    private let authService: FitnessAuthService
     
-    public init(networkService: FitnessNetworkService, authService: AuthServiceProtocol) {
+    public init(networkService: FitnessNetworkService, authService: FitnessAuthService) {
         self.networkService = networkService
         self.authService = authService
     }
@@ -12,7 +12,7 @@ public class GoalService: GoalServiceProtocol {
     
     public func fetchGoals() async throws -> [Goal] {
         guard let _ = try? authService.getToken() else {
-            throw AuthError.notAuthenticated
+            throw FitnessAuthError.notAuthenticated
         }
         
         // In a real app, you would include the token in the request
@@ -22,7 +22,7 @@ public class GoalService: GoalServiceProtocol {
     
     public func addGoal(_ goal: Goal) async throws -> Goal {
         guard let _ = try? authService.getToken() else {
-            throw AuthError.notAuthenticated
+            throw FitnessAuthError.notAuthenticated
         }
         
         // In a real app, you would send the goal to the server
@@ -32,7 +32,7 @@ public class GoalService: GoalServiceProtocol {
     
     public func updateGoalProgress(id: String, newValue: Double) async throws -> Goal {
         guard let _ = try? authService.getToken() else {
-            throw AuthError.notAuthenticated
+            throw FitnessAuthError.notAuthenticated
         }
         
         // In a real app, you would update the goal on the server

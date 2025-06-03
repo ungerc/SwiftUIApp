@@ -6,6 +6,9 @@ import FitnessTracker
 // Adapter to make NetworkServiceProtocol conform to AuthNetworkService and FitnessNetworkService
 extension NetworkManager: AuthNetworkService, FitnessNetworkService {}
 
+// Adapter to make AuthServiceProtocol conform to FitnessAuthService
+extension AuthManager: FitnessAuthService {}
+
 public class ApplicationServiceFactory {
     private let serviceProvider: ServiceProvider
     
