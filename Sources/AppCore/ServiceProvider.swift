@@ -1,14 +1,11 @@
 import Foundation
-import Networking
-import Authentication
-import FitnessTracker
 
 public class ServiceProvider {
-    // Adapters
-    public let networkAdapter: NetworkAdapter
-    public let authAdapter: AuthAdapter
-    public let workoutAdapter: WorkoutAdapter
-    public let goalAdapter: GoalAdapter
+    // Application Adapters
+    public let networkAdapter: ApplicationNetworkAdapter
+    public let authAdapter: ApplicationAuthAdapter
+    public let workoutAdapter: ApplicationWorkoutAdapter
+    public let goalAdapter: ApplicationGoalAdapter
     
     public init() {
         // Create core services
@@ -20,10 +17,10 @@ public class ServiceProvider {
         let goalService = GoalService(networkService: networkService, authService: authService)
         
         // Create adapters
-        self.networkAdapter = NetworkAdapter(networkService: networkService)
-        self.authAdapter = AuthAdapter(authService: authService)
-        self.workoutAdapter = WorkoutAdapter(workoutService: workoutService)
-        self.goalAdapter = GoalAdapter(goalService: goalService)
+        self.networkAdapter = ConcreteNetworkAdapter(networkService: networkService)
+        self.authAdapter = ConcreteAuthAdapter(authService: authService)
+        self.workoutAdapter = ConcreteWorkoutAdapter(workoutService: workoutService)
+        self.goalAdapter = ConcreteGoalAdapter(goalService: goalService)
     }
     
     // For testing - allows injecting mock services
@@ -33,9 +30,9 @@ public class ServiceProvider {
         workoutService: WorkoutServiceProtocol,
         goalService: GoalServiceProtocol
     ) {
-        self.networkAdapter = NetworkAdapter(networkService: networkService)
-        self.authAdapter = AuthAdapter(authService: authService)
-        self.workoutAdapter = WorkoutAdapter(workoutService: workoutService)
-        self.goalAdapter = GoalAdapter(goalService: goalService)
+        self.networkAdapter = ConcreteNetworkAdapter(networkService: networkService)
+        self.authAdapter = ConcreteAuthAdapter(authService: authService)
+        self.workoutAdapter = ConcreteWorkoutAdapter(workoutService: workoutService)
+        self.goalAdapter = ConcreteGoalAdapter(goalService: goalService)
     }
 }
