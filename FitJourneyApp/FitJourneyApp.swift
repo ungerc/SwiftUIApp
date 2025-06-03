@@ -1,24 +1,17 @@
 import SwiftUI
+import AppCore
 
 @main
 struct FitJourneyApp: App {
-    // Create dependencies
-    private let networkManager = NetworkManager()
-    private lazy var authManager = AuthManager(networkManager: networkManager)
-    private lazy var goalService = GoalService(networkManager: networkManager, authManager: authManager)
-    private lazy var workoutService = WorkoutService(networkManager: networkManager, authManager: authManager)
+    // Create service provider
+    private let serviceProvider = ServiceProvider()
     
     // Create view models
-    @State private var authViewModel = AuthViewModel(authManager: AuthManager(networkManager: NetworkManager()))
-    @State private var workoutViewModel = WorkoutViewModel(workoutService: WorkoutService(networkManager: NetworkManager(), authManager: AuthManager(networkManager: NetworkManager())))
-    @State private var goalViewModel = GoalViewModel(goalService: GoalService(networkManager: NetworkManager(), authManager: AuthManager(networkManager: NetworkManager())))
+    @State private var authViewModel = AuthViewModel(authAdapter: serviceProvider.authAdapter)
+    @State private var workoutViewModel = WorkoutViewModel(workoutAdapter: serviceProvider.workoutAdapter)
+    @State private var goalViewModel = GoalViewModel(goalAdapter: serviceProvider.goalAdapter)
     
-    init() {
-        // Initialize view models with dependencies
-        authViewModel = AuthViewModel(authManager: authManager)
-        workoutViewModel = WorkoutViewModel(workoutService: workoutService)
-        goalViewModel = GoalViewModel(goalService: goalService)
-    }
+    // No need for custom initializer as we're initializing directly in the property declarations
     
     var body: some Scene {
         WindowGroup {

@@ -1,13 +1,14 @@
 import Foundation
 import SwiftUI
+import AppCore
 
 @Observable
 @MainActor
 class GoalViewModel {
-    private let goalService: GoalService
+    private let goalAdapter: GoalAdapter
     
-    init(goalService: GoalService) {
-        self.goalService = goalService
+    init(goalAdapter: GoalAdapter) {
+        self.goalAdapter = goalAdapter
     }
     
     var goals: [Goal] = []
@@ -19,7 +20,7 @@ class GoalViewModel {
         errorMessage = nil
         
         do {
-            let fetchedGoals = try await goalService.fetchGoals()
+            let fetchedGoals = try await goalAdapter.fetchGoals()
             goals = fetchedGoals
             isLoading = false
         } catch {
@@ -33,7 +34,7 @@ class GoalViewModel {
         errorMessage = nil
         
         do {
-            let newGoal = try await goalService.addGoal(goal)
+            let newGoal = try await goalAdapter.addGoal(goal)
             goals.append(newGoal)
             isLoading = false
         } catch {
@@ -47,7 +48,7 @@ class GoalViewModel {
         errorMessage = nil
         
         do {
-            let updatedGoal = try await goalService.updateGoalProgress(id: id, newValue: newValue)
+            let updatedGoal = try await goalAdapter.updateGoalProgress(id: id, newValue: newValue)
             if let index = goals.firstIndex(where: { $0.id == id }) {
                 goals[index] = updatedGoal
             }

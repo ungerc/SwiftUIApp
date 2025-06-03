@@ -1,16 +1,17 @@
 import Foundation
 import SwiftUI
+import AppCore
 
 @Observable
 @MainActor
 class AuthViewModel {
-    private let authManager: AuthManager
+    private let authAdapter: AuthAdapter
     
-    init(authManager: AuthManager) {
-        self.authManager = authManager
-        // Initialize with values from authManager
-        self.needsAuthentication = !authManager.isAuthenticated
-        self.currentUser = authManager.currentUser
+    init(authAdapter: AuthAdapter) {
+        self.authAdapter = authAdapter
+        // Initialize with values from authAdapter
+        self.needsAuthentication = !authAdapter.isAuthenticated
+        self.currentUser = authAdapter.currentUser
     }
     
     var needsAuthentication: Bool = true
@@ -23,9 +24,7 @@ class AuthViewModel {
         errorMessage = nil
         
         do {
-            let credentials = AuthCredentials(email: email,
-                                              password: password)
-            let user = try await authManager.signIn(with: credentials)
+            let user = try await authAdapter.signIn(email: email, password: password)
             
             currentUser = user
             needsAuthentication = false
@@ -41,8 +40,7 @@ class AuthViewModel {
         errorMessage = nil
         
         do {
-            let credentials = AuthCredentials(email: email, password: password)
-            let user = try await authManager.signUp(with: credentials, name: name)
+            let user = try await authAdapter.signUp(name: name, email: email, password: password)
             
             currentUser = user
             needsAuthentication = false
@@ -55,7 +53,7 @@ class AuthViewModel {
     
     func signOut() {
         do {
-            try authManager.signOut()
+            try authAdapter.signOut()
             self.needsAuthentication = true
             self.currentUser = nil
         } catch {
