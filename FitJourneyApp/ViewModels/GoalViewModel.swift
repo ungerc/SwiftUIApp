@@ -1,62 +1,92 @@
 import Foundation
 import SwiftUI
-import AppCore
 
 @Observable
 @MainActor
 class GoalViewModel {
-    private let goalAdapter: GoalAdapter
-    
-    init(goalAdapter: GoalAdapter) {
-        self.goalAdapter = goalAdapter
-    }
+    private var goalService: GoalService?
     
     var goals: [Goal] = []
     var isLoading: Bool = false
     var errorMessage: String?
     
-    func fetchGoals() async {
-        isLoading = true
-        errorMessage = nil
-        
-        do {
-            let fetchedGoals = try await goalAdapter.fetchGoals()
-            goals = fetchedGoals
-            isLoading = false
-        } catch {
-            errorMessage = "Failed to fetch goals: \(error.localizedDescription)"
-            isLoading = false
-        }
+    func initialize(goalService: GoalService) {
+        self.goalService = goalService
     }
     
-    func addGoal(_ goal: Goal) async {
+    func fetchGoals() async {
+        guard let goalService = goalService else { return }
+        
         isLoading = true
         errorMessage = nil
         
         do {
-            let newGoal = try await goalAdapter.addGoal(goal)
+            goals = try await goalService.fetchGoals()
+        } catch {
+            errorMessage = "Failed to fetch goals: \(error.localizedDescription)"
+        }
+        
+        isLoading = false
+    }
+    
+    func addGoal(name: String, type: GoalType, targetValue: Double, currentValue: Double, unit: String, deadline: Date?) async {
+        guard let goalService = goalService else { return }
+        
+        isLoading = true
+        errorMessage = nil
+        
+        let goal = Goal(
+            id: UUID().uuidString,
+            name: name,
+            targetValue: targetValue,
+            currentValue: currentValue,
+            unit: unit,
+            deadline: deadline,
+            type: type
+        )
+        
+        do {
+            let newGoal = try await goalService.addGoal(goal)
             goals.append(newGoal)
-            isLoading = false
         } catch {
             errorMessage = "Failed to add goal: \(error.localizedDescription)"
-            isLoading = false
         }
+        
+        isLoading = false
     }
     
     func updateGoalProgress(id: String, newValue: Double) async {
+        guard let goalService = goalService else { return }
+        
         isLoading = true
         errorMessage = nil
         
         do {
-            let updatedGoal = try await goalAdapter.updateGoalProgress(id: id, newValue: newValue)
+            let updatedGoal = try await goalService.updateGoalProgress(id: id, newValue: newValue)
             if let index = goals.firstIndex(where: { $0.id == id }) {
                 goals[index] = updatedGoal
             }
-            isLoading = false
         } catch {
-            errorMessage = "Failed to update goal: \(error.localizedDescription)"
-            isLoading = false
+            errorMessage = "Failed to update goal progress: \(error.localizedDescription)"
         }
+        
+        isLoading = false
+    }
+    
+    func deleteGoal(id: String) async {
+        guard let goalService = goalService else { return }
+        
+        isLoading = true
+        errorMessage = nil
+        
+        do {
+            try await goalService.deleteGoal(id: id)
+            goals.removeAll { $0.id == id }
+        } catch {
+            errorMessage = "Failed to delete goal: \(error.localizedDescription)"
+        }
+        
+        isLoading = false
     }
     
     // Helper computed properties

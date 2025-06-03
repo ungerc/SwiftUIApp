@@ -1,63 +1,63 @@
 import Foundation
 import SwiftUI
-import AppCore
 
 @Observable
 @MainActor
 class AuthViewModel {
-    private let authAdapter: AuthAdapter
+    private var authManager: AuthManager?
     
-    init(authAdapter: AuthAdapter) {
-        self.authAdapter = authAdapter
-        // Initialize with values from authAdapter
-        self.needsAuthentication = !authAdapter.isAuthenticated
-        self.currentUser = authAdapter.currentUser
-    }
-    
-    var needsAuthentication: Bool = true
+    var isAuthenticated: Bool = false
     var currentUser: User?
     var errorMessage: String?
     var isLoading: Bool = false
     
+    func initialize(authManager: AuthManager) {
+        self.authManager = authManager
+        self.isAuthenticated = authManager.isAuthenticated
+        self.currentUser = authManager.currentUser
+    }
+    
     func signIn(email: String, password: String) async {
+        guard let authManager = authManager else { return }
+        
         isLoading = true
         errorMessage = nil
         
         do {
-            let user = try await authAdapter.signIn(email: email, password: password)
-            
-            currentUser = user
-            needsAuthentication = false
-            isLoading = false
+            currentUser = try await authManager.signIn(email: email, password: password)
+            isAuthenticated = true
         } catch {
-            errorMessage = "Failed to sign in. Please check your credentials."
-            isLoading = false
+            errorMessage = "Failed to sign in: \(error.localizedDescription)"
         }
+        
+        isLoading = false
     }
     
     func signUp(name: String, email: String, password: String) async {
+        guard let authManager = authManager else { return }
+        
         isLoading = true
         errorMessage = nil
         
         do {
-            let user = try await authAdapter.signUp(name: name, email: email, password: password)
-            
-            currentUser = user
-            needsAuthentication = false
-            isLoading = false
+            currentUser = try await authManager.signUp(email: email, password: password, name: name)
+            isAuthenticated = true
         } catch {
-            errorMessage = "Failed to create account. Please try again."
-            isLoading = false
+            errorMessage = "Failed to sign up: \(error.localizedDescription)"
         }
+        
+        isLoading = false
     }
     
     func signOut() {
+        guard let authManager = authManager else { return }
+        
         do {
-            try authAdapter.signOut()
-            self.needsAuthentication = true
-            self.currentUser = nil
+            try authManager.signOut()
+            isAuthenticated = false
+            currentUser = nil
         } catch {
-            self.errorMessage = "Failed to sign out."
+            errorMessage = "Failed to sign out: \(error.localizedDescription)"
         }
     }
 }
