@@ -44,6 +44,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AA6C6E492DEE22B800123FBD /* AppCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -63,10 +64,7 @@
 			children = (
 				AA6C6E4A2DEE22B800123FBD /* ViewModels */,
 				AA6C6E4B2DEE22B800123FBD /* Views */,
-				AA6C6E4C2DEE22B800123FBD /* Services */,
 				1A2B3C4D5E6F7890ABCDEF02 /* FitJourneyApp.swift */,
-				AA6C6E382DEE22B800123FBD /* NetworkManager.swift */,
-				AA6C6E3A2DEE22B800123FBD /* AuthManager.swift */,
 				1A2B3C4D5E6F7890ABCDEF33 /* Info.plist */,
 			);
 			path = FitJourneyApp;
@@ -144,6 +142,7 @@
 			);
 			name = FitJourneyApp;
 			packageProductDependencies = (
+				AA6C6E492DEE22B800123FBE /* AppCore */,
 			);
 			productName = FitJourneyApp;
 			productReference = 1A2B3C4D5E6F7890ABCDEF00 /* FitJourneyApp.app */;
@@ -203,10 +202,6 @@
 				AA6C6E392DEE291900123FBD /* SignInView.swift in Sources */,
 				AA6C6E3A2DEE291900123FBD /* SignUpView.swift in Sources */,
 				1A2B3C4D5E6F7890ABCDEF01 /* FitJourneyApp.swift in Sources */,
-				AA6C6E372DEE22B800123FBD /* NetworkManager.swift in Sources */,
-				AA6C6E392DEE22B800123FBD /* AuthManager.swift in Sources */,
-				AA6C6E3B2DEE22B800123FBD /* WorkoutService.swift in Sources */,
-				AA6C6E3D2DEE22B800123FBD /* GoalService.swift in Sources */,
 				AA6C6E3F2DEE22B800123FBD /* AuthViewModel.swift in Sources */,
 				AA6C6E412DEE22B800123FBD /* WorkoutViewModel.swift in Sources */,
 				AA6C6E432DEE22B800123FBD /* GoalViewModel.swift in Sources */,
@@ -414,11 +409,18 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		AA6C6E362DEE22B800123FBD /* XCLocalSwiftPackageReference "../SwiftUIApp" */ = {
+		AA6C6E362DEE22B800123FBD /* XCLocalSwiftPackageReference "." */ = {
 			isa = XCLocalSwiftPackageReference;
-			relativePath = ../SwiftUIApp;
+			relativePath = .;
 		};
 /* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		AA6C6E492DEE22B800123FBE /* AppCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = AppCore;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 1A2B3C4D5E6F7890ABCDEF0B /* Project object */;
 }
