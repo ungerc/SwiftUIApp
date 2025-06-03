@@ -1,4 +1,5 @@
 import SwiftUI
+import AppCore
 
 struct MainTabView: View {
     @Environment(AuthViewModel.self) private var authViewModel
@@ -51,14 +52,11 @@ struct MainTabView: View {
 }
 
 #Preview {
-    let networkManager = NetworkManager()
-    let authManager = AuthManager(networkManager: networkManager)
-    let workoutService = WorkoutService(networkManager: networkManager, authManager: authManager)
-    let goalService = GoalService(networkManager: networkManager, authManager: authManager)
+    let serviceProvider = ServiceProvider()
     
     return MainTabView(
-        workoutViewModel: WorkoutViewModel(workoutService: workoutService),
-        goalViewModel: GoalViewModel(goalService: goalService)
+        workoutViewModel: WorkoutViewModel(workoutAdapter: serviceProvider.workoutAdapter),
+        goalViewModel: GoalViewModel(goalAdapter: serviceProvider.goalAdapter)
     )
-    .environment(AuthViewModel(authManager: authManager))
+    .environment(AuthViewModel(authAdapter: serviceProvider.authAdapter))
 }

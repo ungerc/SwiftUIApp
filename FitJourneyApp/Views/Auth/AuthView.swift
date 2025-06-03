@@ -1,4 +1,5 @@
 import SwiftUI
+import AppCore
 
 struct AuthView: View {
     @State private var isSignIn = true
@@ -54,9 +55,8 @@ struct AuthAlert: Identifiable {
 }
 
 #Preview {
-    let networkManager = NetworkManager()
-    let authManager = AuthManager(networkManager: networkManager)
+    let serviceProvider = ServiceProvider()
     
     return AuthView()
-        .environment(AuthViewModel(authManager: authManager))
+        .environment(AuthViewModel(authAdapter: serviceProvider.authAdapter))
 }

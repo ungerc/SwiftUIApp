@@ -1,4 +1,5 @@
 import SwiftUI
+import AppCore
 
 struct SignInView: View {
     @State private var email = ""
@@ -52,10 +53,9 @@ struct SignInView: View {
 
 struct SignInView_Previews: PreviewProvider {
     static var previews: some View {
-        let networkManager = NetworkManager()
-        let authManager = AuthManager(networkManager: networkManager)
+        let serviceProvider = ServiceProvider()
         
         SignInView()
-            .environment(AuthViewModel(authManager: authManager))
+            .environment(AuthViewModel(authAdapter: serviceProvider.authAdapter))
     }
 }

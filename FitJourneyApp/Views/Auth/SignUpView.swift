@@ -1,4 +1,5 @@
 import SwiftUI
+import AppCore
 
 struct SignUpView: View {
     @Environment(AuthViewModel.self) private var authViewModel
@@ -79,10 +80,9 @@ struct SignUpView: View {
 
 struct SignUpView_Previews: PreviewProvider {
     static var previews: some View {
-        let networkManager = NetworkManager()
-        let authManager = AuthManager(networkManager: networkManager)
+        let serviceProvider = ServiceProvider()
         
         SignUpView()
-            .environment(AuthViewModel(authManager: authManager))
+            .environment(AuthViewModel(authAdapter: serviceProvider.authAdapter))
     }
 }
