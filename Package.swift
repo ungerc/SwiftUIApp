@@ -1,4 +1,4 @@
-// swift-tools-version: 6.1
+// swift-tools-version: 5.9
 import PackageDescription
 
 let package = Package(
@@ -19,10 +19,10 @@ let package = Package(
             dependencies: []),
         .target(
             name: "Authentication",
-            dependencies: []),
+            dependencies: ["Networking"]),
         .target(
             name: "FitnessTracker",
-            dependencies: []),
+            dependencies: ["Networking", "Authentication"]),
         .target(
             name: "AppCore",
             dependencies: ["Networking", "Authentication", "FitnessTracker"]),
