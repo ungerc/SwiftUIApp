@@ -22,14 +22,16 @@ struct FitJourneyApp: App {
     
     var body: some Scene {
         WindowGroup {
-            if authViewModel.isAuthenticated {
+
+                //            if authViewModel.isAuthenticated {
                 MainTabView(workoutViewModel: workoutViewModel,
                             goalViewModel: goalViewModel)
-                    .environment(authViewModel)
-            } else {
-                AuthView()
-                    .environment(authViewModel)
-            }
+                .environment(authViewModel)
+                
+                //            } else {
+                //                AuthView()
+                //                    .environment(authViewModel)
+                //            }
         }
     }
 }
