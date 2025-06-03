@@ -6,26 +6,26 @@ import FitnessTracker
 // MARK: - Auth Adapter Protocol
 public protocol ApplicationAuthAdapter {
     var isAuthenticated: Bool { get }
-    var currentUser: User? { get }
+    var currentUser: AppUser? { get }
     
-    func signIn(email: String, password: String) async throws -> User
-    func signUp(email: String, password: String, name: String) async throws -> User
+    func signIn(email: String, password: String) async throws -> AppUser
+    func signUp(email: String, password: String, name: String) async throws -> AppUser
     func signOut() throws
     func getToken() throws -> String
 }
 
 // MARK: - Workout Adapter Protocol
 public protocol ApplicationWorkoutAdapter {
-    func fetchWorkouts() async throws -> [Workout]
-    func addWorkout(name: String, type: WorkoutType, duration: TimeInterval, caloriesBurned: Double, date: Date) async throws -> Workout
+    func fetchWorkouts() async throws -> [AppWorkout]
+    func addWorkout(name: String, type: AppWorkoutType, duration: TimeInterval, caloriesBurned: Double, date: Date) async throws -> AppWorkout
     func deleteWorkout(id: String) async throws
 }
 
 // MARK: - Goal Adapter Protocol
 public protocol ApplicationGoalAdapter {
-    func fetchGoals() async throws -> [Goal]
-    func addGoal(name: String, type: GoalType, targetValue: Double, currentValue: Double, unit: String, deadline: Date?) async throws -> Goal
-    func updateGoalProgress(id: String, newValue: Double) async throws -> Goal
+    func fetchGoals() async throws -> [AppGoal]
+    func addGoal(name: String, type: AppGoalType, targetValue: Double, currentValue: Double, unit: String, deadline: Date?) async throws -> AppGoal
+    func updateGoalProgress(id: String, newValue: Double) async throws -> AppGoal
     func deleteGoal(id: String) async throws
 }
 
@@ -38,7 +38,7 @@ public protocol ApplicationNetworkAdapter {
 }
 
 // MARK: - Model Types
-public struct User: Codable, Identifiable {
+public struct AppUser: Codable, Identifiable {
     public let id: String
     public let email: String
     public let name: String
@@ -48,17 +48,24 @@ public struct User: Codable, Identifiable {
         self.email = email
         self.name = name
     }
+    
+    // Convert from AuthUser
+    public init(authUser: AuthUser) {
+        self.id = authUser.id
+        self.email = authUser.email
+        self.name = authUser.name
+    }
 }
 
-public struct Workout: Identifiable, Codable {
+public struct AppWorkout: Identifiable, Codable {
     public let id: String
     public let name: String
     public let duration: TimeInterval
     public let caloriesBurned: Double
     public let date: Date
-    public let type: WorkoutType
+    public let type: AppWorkoutType
     
-    public init(id: String, name: String, duration: TimeInterval, caloriesBurned: Double, date: Date, type: WorkoutType) {
+    public init(id: String, name: String, duration: TimeInterval, caloriesBurned: Double, date: Date, type: AppWorkoutType) {
         self.id = id
         self.name = name
         self.duration = duration
@@ -66,9 +73,19 @@ public struct Workout: Identifiable, Codable {
         self.date = date
         self.type = type
     }
+    
+    // Convert from FitnessTracker Workout
+    public init(workout: FitnessTracker.Workout) {
+        self.id = workout.id
+        self.name = workout.name
+        self.duration = workout.duration
+        self.caloriesBurned = workout.caloriesBurned
+        self.date = workout.date
+        self.type = AppWorkoutType(fitnessType: workout.type)
+    }
 }
 
-public enum WorkoutType: String, Codable, CaseIterable {
+public enum AppWorkoutType: String, Codable, CaseIterable {
     case running
     case cycling
     case swimming
@@ -86,22 +103,34 @@ public enum WorkoutType: String, Codable, CaseIterable {
         case .hiit: return "heart.circle"
         }
     }
+    
+    // Convert from FitnessTracker WorkoutType
+    public init(fitnessType: FitnessTracker.WorkoutType) {
+        switch fitnessType {
+        case .running: self = .running
+        case .cycling: self = .cycling
+        case .swimming: self = .swimming
+        case .weightLifting: self = .weightLifting
+        case .yoga: self = .yoga
+        case .hiit: self = .hiit
+        }
+    }
 }
 
-public struct Goal: Identifiable, Codable {
+public struct AppGoal: Identifiable, Codable {
     public let id: String
     public let name: String
     public let targetValue: Double
     public let currentValue: Double
     public let unit: String
     public let deadline: Date?
-    public let type: GoalType
+    public let type: AppGoalType
     
     public var progress: Double {
         return min(currentValue / targetValue, 1.0)
     }
     
-    public init(id: String, name: String, targetValue: Double, currentValue: Double, unit: String, deadline: Date?, type: GoalType) {
+    public init(id: String, name: String, targetValue: Double, currentValue: Double, unit: String, deadline: Date?, type: AppGoalType) {
         self.id = id
         self.name = name
         self.targetValue = targetValue
@@ -110,9 +139,20 @@ public struct Goal: Identifiable, Codable {
         self.deadline = deadline
         self.type = type
     }
+    
+    // Convert from FitnessTracker Goal
+    public init(goal: FitnessTracker.Goal) {
+        self.id = goal.id
+        self.name = goal.name
+        self.targetValue = goal.targetValue
+        self.currentValue = goal.currentValue
+        self.unit = goal.unit
+        self.deadline = goal.deadline
+        self.type = AppGoalType(fitnessType: goal.type)
+    }
 }
 
-public enum GoalType: String, Codable, CaseIterable {
+public enum AppGoalType: String, Codable, CaseIterable {
     case weight
     case steps
     case workouts
@@ -126,6 +166,17 @@ public enum GoalType: String, Codable, CaseIterable {
         case .workouts: return "figure.highintensity.intervaltraining"
         case .distance: return "figure.run"
         case .calories: return "flame"
+        }
+    }
+    
+    // Convert from FitnessTracker GoalType
+    public init(fitnessType: FitnessTracker.GoalType) {
+        switch fitnessType {
+        case .weight: self = .weight
+        case .steps: self = .steps
+        case .workouts: self = .workouts
+        case .distance: self = .distance
+        case .calories: self = .calories
         }
     }
 }
