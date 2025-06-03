@@ -1,4 +1,5 @@
 import Foundation
+import Networking
 
 public enum AuthError: Error {
     case signInFailed
