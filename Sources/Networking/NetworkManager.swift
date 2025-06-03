@@ -7,7 +7,7 @@ public enum NetworkError: Error {
     case decodingFailed(Error)
 }
 
-public class NetworkManager {
+public class NetworkManager: NetworkServiceProtocol {
     public init() {}
     
     public func fetch<T: Decodable>(from urlString: String) async throws -> T {

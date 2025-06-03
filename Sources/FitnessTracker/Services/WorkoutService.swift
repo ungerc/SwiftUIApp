@@ -2,18 +2,18 @@ import Foundation
 import Networking
 import Authentication
 
-public class WorkoutService {
-    private let networkManager: NetworkManager
-    private let authManager: AuthManager
+public class WorkoutService: WorkoutServiceProtocol {
+    private let networkService: NetworkServiceProtocol
+    private let authService: AuthServiceProtocol
     
-    public init(networkManager: NetworkManager, authManager: AuthManager) {
-        self.networkManager = networkManager
-        self.authManager = authManager
+    public init(networkService: NetworkServiceProtocol, authService: AuthServiceProtocol) {
+        self.networkService = networkService
+        self.authService = authService
     }
     private let baseURL = "https://api.fitjourney.com/workouts"
     
     public func fetchWorkouts() async throws -> [Workout] {
-        guard let _ = try? authManager.getToken() else {
+        guard let _ = try? authService.getToken() else {
             throw AuthError.notAuthenticated
         }
         
@@ -23,7 +23,7 @@ public class WorkoutService {
     }
     
     public func addWorkout(_ workout: Workout) async throws -> Workout {
-        guard let _ = try? authManager.getToken() else {
+        guard let _ = try? authService.getToken() else {
             throw AuthError.notAuthenticated
         }
         

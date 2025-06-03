@@ -2,18 +2,18 @@ import Foundation
 import Networking
 import Authentication
 
-public class GoalService {
-    private let networkManager: NetworkManager
-    private let authManager: AuthManager
+public class GoalService: GoalServiceProtocol {
+    private let networkService: NetworkServiceProtocol
+    private let authService: AuthServiceProtocol
     
-    public init(networkManager: NetworkManager, authManager: AuthManager) {
-        self.networkManager = networkManager
-        self.authManager = authManager
+    public init(networkService: NetworkServiceProtocol, authService: AuthServiceProtocol) {
+        self.networkService = networkService
+        self.authService = authService
     }
     private let baseURL = "https://api.fitjourney.com/goals"
     
     public func fetchGoals() async throws -> [Goal] {
-        guard let _ = try? authManager.getToken() else {
+        guard let _ = try? authService.getToken() else {
             throw AuthError.notAuthenticated
         }
         
@@ -23,7 +23,7 @@ public class GoalService {
     }
     
     public func addGoal(_ goal: Goal) async throws -> Goal {
-        guard let _ = try? authManager.getToken() else {
+        guard let _ = try? authService.getToken() else {
             throw AuthError.notAuthenticated
         }
         
@@ -33,7 +33,7 @@ public class GoalService {
     }
     
     public func updateGoalProgress(id: String, newValue: Double) async throws -> Goal {
-        guard let _ = try? authManager.getToken() else {
+        guard let _ = try? authService.getToken() else {
             throw AuthError.notAuthenticated
         }
         

@@ -35,11 +35,11 @@ public struct AuthResponse: Codable {
     public let token: String
 }
 
-public class AuthManager {
-    private let networkManager: NetworkManager
+public class AuthManager: AuthServiceProtocol {
+    private let networkService: NetworkServiceProtocol
     
-    public init(networkManager: NetworkManager) {
-        self.networkManager = networkManager
+    public init(networkService: NetworkServiceProtocol) {
+        self.networkService = networkService
     }
     private let baseURL = "https://api.fitjourney.com/auth"
     
@@ -53,7 +53,7 @@ public class AuthManager {
     @discardableResult
     public func signIn(with credentials: AuthCredentials) async throws -> User {
         do {
-            let response: AuthResponse = try await networkManager.post(
+            let response: AuthResponse = try await networkService.post(
                 to: "\(baseURL)/signin",
                 body: credentials
             )
@@ -82,7 +82,7 @@ public class AuthManager {
         )
         
         do {
-            let response: AuthResponse = try await networkManager.post(
+            let response: AuthResponse = try await networkService.post(
                 to: "\(baseURL)/signup",
                 body: request
             )
