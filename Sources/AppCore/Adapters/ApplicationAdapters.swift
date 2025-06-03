@@ -1,4 +1,7 @@
 import Foundation
+import Networking
+import Authentication
+import FitnessTracker
 
 // MARK: - Auth Adapter Protocol
 public protocol ApplicationAuthAdapter {
