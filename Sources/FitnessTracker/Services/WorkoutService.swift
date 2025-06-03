@@ -1,6 +1,4 @@
 import Foundation
-import Networking
-import Authentication
 
 public class WorkoutService: WorkoutServiceProtocol {
     private let networkService: NetworkServiceProtocol

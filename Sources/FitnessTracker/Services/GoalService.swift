@@ -1,6 +1,4 @@
 import Foundation
-import Networking
-import Authentication
 
 public class GoalService: GoalServiceProtocol {
     private let networkService: NetworkServiceProtocol

@@ -10,6 +10,7 @@ let package = Package(
         .library(name: "Networking", targets: ["Networking"]),
         .library(name: "Authentication", targets: ["Authentication"]),
         .library(name: "FitnessTracker", targets: ["FitnessTracker"]),
+        .library(name: "AppCore", targets: ["AppCore"]),
     ],
     dependencies: [],
     targets: [
@@ -22,6 +23,9 @@ let package = Package(
         .target(
             name: "FitnessTracker",
             dependencies: []),
+        .target(
+            name: "AppCore",
+            dependencies: ["Networking", "Authentication", "FitnessTracker"]),
         .testTarget(
             name: "NetworkingTests",
             dependencies: ["Networking"]),
@@ -30,6 +34,9 @@ let package = Package(
             dependencies: ["Authentication"]),
         .testTarget(
             name: "FitnessTrackerTests",
-            dependencies: ["FitnessTracker"])
+            dependencies: ["FitnessTracker"]),
+        .testTarget(
+            name: "AppCoreTests",
+            dependencies: ["AppCore"])
     ]
 )
