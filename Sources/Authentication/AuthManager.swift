@@ -11,7 +11,7 @@ public enum AuthError: Error {
     case notAuthenticated
 }
 
-public struct User: Codable {
+public struct AuthUser: Codable {
     public let id: String
     public let email: String
     public let name: String
@@ -34,7 +34,7 @@ public struct AuthCredentials: Codable {
 }
 
 public struct AuthResponse: Codable {
-    public let user: User
+    public let user: AuthUser
     public let token: String
 }
 
@@ -46,7 +46,7 @@ public class AuthManager: AuthServiceProtocol {
     }
     private let baseURL = "https://api.fitjourney.com/auth"
     
-    public private(set) var currentUser: User?
+    public private(set) var currentUser: AuthUser?
     private var authToken: String?
     
     public var isAuthenticated: Bool {
@@ -54,7 +54,7 @@ public class AuthManager: AuthServiceProtocol {
     }
     
     @discardableResult
-    public func signIn(with credentials: AuthCredentials) async throws -> User {
+    public func signIn(with credentials: AuthCredentials) async throws -> AuthUser {
         do {
             let response: AuthResponse = try await networkService.post(
                 to: "\(baseURL)/signin",
@@ -71,7 +71,7 @@ public class AuthManager: AuthServiceProtocol {
     }
     
     @discardableResult
-    public func signUp(with credentials: AuthCredentials, name: String) async throws -> User {
+    public func signUp(with credentials: AuthCredentials, name: String) async throws -> AuthUser {
         struct SignUpRequest: Codable {
             let email: String
             let password: String
