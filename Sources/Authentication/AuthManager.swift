@@ -55,6 +55,9 @@ public class AuthManager: AuthServiceProtocol {
     
     @discardableResult
     public func signIn(with credentials: AuthCredentials) async throws -> AuthUser {
+
+        return AuthUser(id: "1", email: credentials.email, name: "Peter Petersen")
+
         do {
             let response: AuthResponse = try await networkService.post(
                 to: "\(baseURL)/signin",
@@ -72,6 +75,8 @@ public class AuthManager: AuthServiceProtocol {
     
     @discardableResult
     public func signUp(with credentials: AuthCredentials, name: String) async throws -> AuthUser {
+        return AuthUser(id: "1", email: credentials.email, name: name)
+//////////
         struct SignUpRequest: Codable {
             let email: String
             let password: String

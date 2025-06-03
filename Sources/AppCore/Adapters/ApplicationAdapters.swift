@@ -38,7 +38,7 @@ public protocol ApplicationNetworkAdapter {
 }
 
 // MARK: - Model Types
-public struct AppUser: Codable, Identifiable {
+public struct AppUser: Codable, Identifiable, Sendable {
     public let id: String
     public let email: String
     public let name: String
@@ -57,7 +57,7 @@ public struct AppUser: Codable, Identifiable {
     }
 }
 
-public struct AppWorkout: Identifiable, Codable {
+public struct AppWorkout: Identifiable, Codable, Sendable {
     public let id: String
     public let name: String
     public let duration: TimeInterval
@@ -85,7 +85,7 @@ public struct AppWorkout: Identifiable, Codable {
     }
 }
 
-public enum AppWorkoutType: String, Codable, CaseIterable {
+public enum AppWorkoutType: String, Codable, CaseIterable, Sendable {
     case running
     case cycling
     case swimming
@@ -117,7 +117,7 @@ public enum AppWorkoutType: String, Codable, CaseIterable {
     }
 }
 
-public struct AppGoal: Identifiable, Codable {
+public struct AppGoal: Identifiable, Codable, Sendable {
     public let id: String
     public let name: String
     public let targetValue: Double
@@ -152,7 +152,7 @@ public struct AppGoal: Identifiable, Codable {
     }
 }
 
-public enum AppGoalType: String, Codable, CaseIterable {
+public enum AppGoalType: String, Codable, CaseIterable, Sendable {
     case weight
     case steps
     case workouts

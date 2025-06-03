@@ -8,8 +8,9 @@ let package = Package(
     ],
     products: [
         .library(
-            name: "Networking",
-            targets: ["Networking"]),
+            name: "AppCore",
+            type: .dynamic,
+            targets: ["AppCore"]),
         .library(
             name: "Authentication",
             targets: ["Authentication"]),
@@ -17,9 +18,8 @@ let package = Package(
             name: "FitnessTracker",
             targets: ["FitnessTracker"]),
         .library(
-            name: "AppCore",
-            type: .dynamic,
-            targets: ["AppCore"]),
+            name: "Networking",
+            targets: ["Networking"])
     ],
     dependencies: [],
     targets: [
@@ -43,17 +43,17 @@ let package = Package(
             dependencies: [],
             path: "Sources/Networking",
             swiftSettings: [.enableExperimentalFeature("StrictConcurrency")])
-//        .testTarget(
-//            name: "NetworkingTests",
-//            dependencies: ["Networking"]),
-//        .testTarget(
-//            name: "AuthenticationTests",
-//            dependencies: ["Authentication"]),
-//        .testTarget(
-//            name: "FitnessTrackerTests",
-//            dependencies: ["FitnessTracker"]),
-//        .testTarget(
-//            name: "AppCoreTests",
-//            dependencies: ["AppCore"])
+        //        .testTarget(
+        //            name: "NetworkingTests",
+        //            dependencies: ["Networking"]),
+        //        .testTarget(
+        //            name: "AuthenticationTests",
+        //            dependencies: ["Authentication"]),
+        //        .testTarget(
+        //            name: "FitnessTrackerTests",
+        //            dependencies: ["FitnessTracker"]),
+        //        .testTarget(
+        //            name: "AppCoreTests",
+        //            dependencies: ["AppCore"])
     ]
 )
