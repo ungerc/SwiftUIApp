@@ -16,20 +16,16 @@ let package = Package(
     targets: [
         .target(
             name: "Networking",
-            dependencies: [],
-            path: "Sources/Networking"),
+            dependencies: []),
         .target(
             name: "Authentication",
-            dependencies: ["Networking"],
-            path: "Sources/Authentication"),
+            dependencies: ["Networking"]),
         .target(
             name: "FitnessTracker",
-            dependencies: ["Networking", "Authentication"],
-            path: "Sources/FitnessTracker"),
+            dependencies: ["Networking", "Authentication"]),
         .target(
             name: "AppCore",
-            dependencies: ["Networking", "Authentication", "FitnessTracker"],
-            path: "Sources/AppCore"),
+            dependencies: ["Networking", "Authentication", "FitnessTracker"]),
         .testTarget(
             name: "NetworkingTests",
             dependencies: ["Networking"]),
