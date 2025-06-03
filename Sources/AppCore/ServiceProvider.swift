@@ -1,4 +1,7 @@
 import Foundation
+import Networking
+import Authentication
+import FitnessTracker
 
 public class ServiceProvider {
     // Application Adapters
