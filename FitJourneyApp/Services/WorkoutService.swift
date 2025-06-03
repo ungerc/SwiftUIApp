@@ -4,7 +4,8 @@ public class WorkoutService {
     private let networkManager: NetworkManager
     private let authManager: AuthManager
     
-    public init(networkManager: NetworkManager, authManager: AuthManager) {
+     init(networkManager: NetworkManager,
+          authManager: AuthManager) {
         self.networkManager = networkManager
         self.authManager = authManager
     }
