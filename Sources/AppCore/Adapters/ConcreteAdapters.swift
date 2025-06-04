@@ -54,9 +54,15 @@ public class ConcreteWorkoutAdapter: ApplicationWorkoutAdapter {
         return fitnessWorkouts.map { AppWorkout(workout: $0) }
     }
     
-    public func addWorkout(name: String, type: AppWorkoutType, duration: TimeInterval, caloriesBurned: Double, date: Date) async throws -> AppWorkout {
+    public func addWorkout(name: String,
+                           type: AppWorkoutType,
+                           duration: TimeInterval,
+                           caloriesBurned: Double,
+                           date: Date) async throws -> AppWorkout {
+
         // Convert AppWorkoutType to FitnessTracker.WorkoutType
         let fitnessType: FitnessTracker.WorkoutType
+
         switch type {
         case .running: fitnessType = .running
         case .cycling: fitnessType = .cycling

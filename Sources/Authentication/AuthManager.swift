@@ -111,6 +111,9 @@ public class AuthManager: AuthServiceProtocol {
     }
     
     public func getToken() throws -> String {
+#warning ("Implement proper token management")
+        return "ABD#$DFRG$^"
+
         guard let token = authToken else {
             throw AuthError.notAuthenticated
         }
