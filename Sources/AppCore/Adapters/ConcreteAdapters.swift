@@ -1,10 +1,11 @@
 import Foundation
+import SwiftUI
 import Networking
 import Authentication
 import FitnessTracker
 
 // MARK: - Concrete Auth Adapter
-public class ConcreteAuthAdapter: ApplicationAuthAdapter {
+internal class ConcreteAuthAdapter: ApplicationAuthAdapter {
     private let authService: AuthServiceProtocol
     
     public init(authService: AuthServiceProtocol) {
@@ -20,12 +21,14 @@ public class ConcreteAuthAdapter: ApplicationAuthAdapter {
         return AppUser(authUser: authUser)
     }
     
+    @MainActor
     public func signIn(email: String, password: String) async throws -> AppUser {
         let credentials = AuthCredentials(email: email, password: password)
         let authUser = try await authService.signIn(with: credentials)
         return AppUser(authUser: authUser)
     }
     
+    @MainActor
     public func signUp(email: String, password: String, name: String) async throws -> AppUser {
         let credentials = AuthCredentials(email: email, password: password)
         let authUser = try await authService.signUp(with: credentials, name: name)
@@ -39,10 +42,18 @@ public class ConcreteAuthAdapter: ApplicationAuthAdapter {
     public func getToken() throws -> String {
         return try authService.getToken()
     }
+    
+    @MainActor
+    public func makeAuthView() -> AnyView {
+        AnyView(
+            AuthView()
+                .environment(AuthViewModel(authService: authService))
+        )
+    }
 }
 
 // MARK: - Concrete Workout Adapter
-public class ConcreteWorkoutAdapter: ApplicationWorkoutAdapter {
+internal class ConcreteWorkoutAdapter: ApplicationWorkoutAdapter {
     private let workoutService: WorkoutServiceProtocol
     
     public init(workoutService: WorkoutServiceProtocol) {
@@ -91,7 +102,7 @@ public class ConcreteWorkoutAdapter: ApplicationWorkoutAdapter {
 }
 
 // MARK: - Concrete Goal Adapter
-public class ConcreteGoalAdapter: ApplicationGoalAdapter {
+internal class ConcreteGoalAdapter: ApplicationGoalAdapter {
     private let goalService: GoalServiceProtocol
     
     public init(goalService: GoalServiceProtocol) {
@@ -139,7 +150,7 @@ public class ConcreteGoalAdapter: ApplicationGoalAdapter {
 }
 
 // MARK: - Concrete Network Adapter
-public class ConcreteNetworkAdapter: ApplicationNetworkAdapter {
+internal class ConcreteNetworkAdapter: ApplicationNetworkAdapter {
     private let networkService: NetworkServiceProtocol
     
     public init(networkService: NetworkServiceProtocol) {

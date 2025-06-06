@@ -11,7 +11,7 @@ public enum AuthError: Error {
     case notAuthenticated
 }
 
-public struct AuthUser: Codable {
+public struct AuthUser: Codable, Sendable {
     public let id: String
     public let email: String
     public let name: String
@@ -23,7 +23,7 @@ public struct AuthUser: Codable {
     }
 }
 
-public struct AuthCredentials: Codable {
+public struct AuthCredentials: Codable, Sendable {
     public let email: String
     public let password: String
     
@@ -33,7 +33,7 @@ public struct AuthCredentials: Codable {
     }
 }
 
-public struct AuthResponse: Codable {
+public struct AuthResponse: Codable, Sendable {
     public let user: AuthUser
     public let token: String
 }
@@ -53,11 +53,16 @@ public class AuthManager: AuthServiceProtocol {
         return currentUser != nil && authToken != nil
     }
     
+    @MainActor
     @discardableResult
     public func signIn(with credentials: AuthCredentials) async throws -> AuthUser {
+        // Temporarily using mock data for testing
+        self.currentUser = AuthUser(id: "1", email: credentials.email, name: "Peter Petersen")
+        self.authToken = "mock-token-123"
+        return self.currentUser!
 
-        return AuthUser(id: "1", email: credentials.email, name: "Peter Petersen")
-
+        // TODO: Uncomment when backend is ready
+        /*
         do {
             let response: AuthResponse = try await networkService.post(
                 to: "\(baseURL)/signin",
@@ -71,12 +76,19 @@ public class AuthManager: AuthServiceProtocol {
         } catch {
             throw AuthError.signInFailed
         }
+        */
     }
     
+    @MainActor
     @discardableResult
     public func signUp(with credentials: AuthCredentials, name: String) async throws -> AuthUser {
-        return AuthUser(id: "1", email: credentials.email, name: name)
-//////////
+        // Temporarily using mock data for testing
+        self.currentUser = AuthUser(id: "1", email: credentials.email, name: name)
+        self.authToken = "mock-token-123"
+        return self.currentUser!
+        
+        // TODO: Uncomment when backend is ready
+        /*
         struct SignUpRequest: Codable {
             let email: String
             let password: String
@@ -102,6 +114,7 @@ public class AuthManager: AuthServiceProtocol {
         } catch {
             throw AuthError.signUpFailed
         }
+        */
     }
     
     public func signOut() throws {

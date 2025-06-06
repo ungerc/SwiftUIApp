@@ -1,17 +1,23 @@
 import Foundation
+import SwiftUI
 import Networking
 import Authentication
 import FitnessTracker
 
 // MARK: - Auth Adapter Protocol
-public protocol ApplicationAuthAdapter {
+public protocol ApplicationAuthAdapter: AnyObject {
     var isAuthenticated: Bool { get }
     var currentUser: AppUser? { get }
     
+    @MainActor
     func signIn(email: String, password: String) async throws -> AppUser
+    @MainActor
     func signUp(email: String, password: String, name: String) async throws -> AppUser
     func signOut() throws
     func getToken() throws -> String
+    
+    @MainActor
+    func makeAuthView() -> AnyView
 }
 
 // MARK: - Workout Adapter Protocol

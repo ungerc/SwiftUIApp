@@ -1,9 +1,10 @@
 import Foundation
+import SwiftUI
 import Authentication
 
-// This adapter exposes the AuthServiceProtocol to other modules
+// This adapter exposes the AuthServiceProtocol and AuthView to other modules
 // without them needing to import Authentication directly
-public class AuthAdapter {
+internal class AuthAdapter {
     private let authService: AuthServiceProtocol
     
     public init(authService: AuthServiceProtocol) {
@@ -14,16 +15,18 @@ public class AuthAdapter {
         return authService.isAuthenticated
     }
     
-    public var currentUser: User? {
+    public var currentUser: AuthUser? {
         return authService.currentUser
     }
     
-    public func signIn(email: String, password: String) async throws -> User {
+    @MainActor
+    public func signIn(email: String, password: String) async throws -> AuthUser {
         let credentials = AuthCredentials(email: email, password: password)
         return try await authService.signIn(with: credentials)
     }
     
-    public func signUp(name: String, email: String, password: String) async throws -> User {
+    @MainActor
+    public func signUp(name: String, email: String, password: String) async throws -> AuthUser {
         let credentials = AuthCredentials(email: email, password: password)
         return try await authService.signUp(with: credentials, name: name)
     }
@@ -34,5 +37,14 @@ public class AuthAdapter {
     
     public func getToken() throws -> String {
         return try authService.getToken()
+    }
+    
+    // Expose the AuthView with the proper environment setup
+    @MainActor
+    public func makeAuthView() -> AnyView {
+        AnyView(
+            AuthView()
+                .environment(AuthViewModel(authService: authService))
+        )
     }
 }
