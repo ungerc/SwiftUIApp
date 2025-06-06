@@ -1,0 +1,45 @@
+{
+  "configurations" : [
+    {
+      "id" : "E5B5D5A5-1234-4567-8901-123456789ABC",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:SwiftUIApp.xcodeproj",
+      "identifier" : "SwiftUIAppTests",
+      "name" : "SwiftUIAppTests"
+    }
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:SwiftUIApp",
+        "identifier" : "AuthenticationTests",
+        "name" : "AuthenticationTests"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:SwiftUIApp",
+        "identifier" : "AppCoreTests",
+        "name" : "AppCoreTests"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:FitJourneyApp",
+        "identifier" : "FitJourneyAppTests",
+        "name" : "FitJourneyAppTests"
+      }
+    }
+  ],
+  "version" : 1
+}

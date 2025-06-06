@@ -57,3 +57,57 @@ let package = Package(
         //            dependencies: ["AppCore"])
     ]
 )
+// swift-tools-version: 5.9
+import PackageDescription
+
+let package = Package(
+    name: "SwiftUIApp",
+    platforms: [
+        .iOS(.v17),
+        .macOS(.v14)
+    ],
+    products: [
+        .library(
+            name: "Authentication",
+            targets: ["Authentication"]),
+        .library(
+            name: "AppCore",
+            targets: ["AppCore"]),
+        .library(
+            name: "Networking",
+            targets: ["Networking"]),
+        .library(
+            name: "FitnessTracker",
+            targets: ["FitnessTracker"])
+    ],
+    dependencies: [],
+    targets: [
+        // Main targets
+        .target(
+            name: "Authentication",
+            dependencies: [],
+            path: "Sources/Authentication"),
+        .target(
+            name: "AppCore",
+            dependencies: ["Authentication", "Networking", "FitnessTracker"],
+            path: "Sources/AppCore"),
+        .target(
+            name: "Networking",
+            dependencies: [],
+            path: "Sources/Networking"),
+        .target(
+            name: "FitnessTracker",
+            dependencies: [],
+            path: "Sources/FitnessTracker"),
+        
+        // Test targets
+        .testTarget(
+            name: "AuthenticationTests",
+            dependencies: ["Authentication"],
+            path: "Tests/AuthenticationTests"),
+        .testTarget(
+            name: "AppCoreTests",
+            dependencies: ["AppCore", "Authentication", "FitnessTracker"],
+            path: "Tests/AppCoreTests")
+    ]
+)
