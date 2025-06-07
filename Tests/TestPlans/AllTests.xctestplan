@@ -17,19 +17,9 @@
   },
   "testTargets" : [
     {
-      "parallelizable" : true,
       "target" : {
-        "containerPath" : "container:SwiftUIApp",
-        "identifier" : "AuthenticationTests",
-        "name" : "AuthenticationTests"
-      }
-    },
-    {
-      "enabled" : false,
-      "parallelizable" : true,
-      "target" : {
-        "containerPath" : "container:FitJourneyApp",
-        "identifier" : "FitJourneyAppTests",
+        "containerPath" : "container:FitJourneyApp.xcodeproj",
+        "identifier" : "AAF04F512DF4490300F9BC2B",
         "name" : "FitJourneyAppTests"
       }
     }
