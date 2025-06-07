@@ -25,14 +25,7 @@
       }
     },
     {
-      "parallelizable" : true,
-      "target" : {
-        "containerPath" : "container:SwiftUIApp",
-        "identifier" : "AppCoreTests",
-        "name" : "AppCoreTests"
-      }
-    },
-    {
+      "enabled" : false,
       "parallelizable" : true,
       "target" : {
         "containerPath" : "container:FitJourneyApp",

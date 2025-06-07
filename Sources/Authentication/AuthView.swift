@@ -39,7 +39,9 @@ public struct AuthView: View {
                 
                 Spacer()
             }
+            #if os(iOS)
             .navigationBarHidden(true)
+            #endif
             .alert(item: Binding<AuthAlert?>(
                 get: { authViewModel.errorMessage != nil ? AuthAlert(message: authViewModel.errorMessage!) : nil },
                 set: { _ in authViewModel.errorMessage = nil }

@@ -13,27 +13,29 @@ internal struct SignUpView: View {
         VStack(spacing: 20) {
             TextField("Full Name", text: $name)
                 .padding()
-                .background(Color(.systemGray6))
+                .background(Color.gray.opacity(0.1))
                 .cornerRadius(10)
                 .padding(.horizontal, 20)
             
             TextField("Email", text: $email)
+                #if os(iOS)
                 .keyboardType(.emailAddress)
                 .autocapitalization(.none)
+                #endif
                 .padding()
-                .background(Color(.systemGray6))
+                .background(Color.gray.opacity(0.1))
                 .cornerRadius(10)
                 .padding(.horizontal, 20)
             
             SecureField("Password", text: $password)
                 .padding()
-                .background(Color(.systemGray6))
+                .background(Color.gray.opacity(0.1))
                 .cornerRadius(10)
                 .padding(.horizontal, 20)
             
             SecureField("Confirm Password", text: $confirmPassword)
                 .padding()
-                .background(Color(.systemGray6))
+                .background(Color.gray.opacity(0.1))
                 .cornerRadius(10)
                 .padding(.horizontal, 20)
                 .onChange(of: confirmPassword) { _, newValue in

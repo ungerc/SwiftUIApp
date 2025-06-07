@@ -8,16 +8,18 @@ internal struct SignInView: View {
     var body: some View {
         VStack(spacing: 20) {
             TextField("Email", text: $email)
+                #if os(iOS)
                 .keyboardType(.emailAddress)
                 .autocapitalization(.none)
+                #endif
                 .padding()
-                .background(Color(.systemGray6))
+                .background(Color.gray.opacity(0.1))
                 .cornerRadius(10)
                 .padding(.horizontal, 20)
             
             SecureField("Password", text: $password)
                 .padding()
-                .background(Color(.systemGray6))
+                .background(Color.gray.opacity(0.1))
                 .cornerRadius(10)
                 .padding(.horizontal, 20)
             

@@ -1,105 +1,110 @@
-import XCTest
+import Testing
 @testable import Authentication
 
-final class AuthManagerTests: XCTestCase {
-    var authManager: AuthManager!
-    var mockNetworkService: MockNetworkService!
-    
-    override func setUp() {
-        super.setUp()
-        mockNetworkService = MockNetworkService()
-        authManager = AuthManager(networkService: mockNetworkService)
-    }
-    
-    override func tearDown() {
-        authManager = nil
-        mockNetworkService = nil
-        super.tearDown()
+@Suite("AuthManager Tests")
+struct AuthManagerTests {
+    let mockNetworkService = MockNetworkService()
+    var authManager: AuthManager {
+        AuthManager(networkService: mockNetworkService)
     }
     
     // MARK: - Sign In Tests
     
+    @Test("Sign in with valid credentials")
     @MainActor
-    func testSignInSuccess() async throws {
+    func signInSuccess() async throws {
         // Given
         let credentials = AuthCredentials(email: "test@example.com", password: "password123")
+        let manager = authManager
         
         // When
-        let user = try await authManager.signIn(with: credentials)
+        let user = try await manager.signIn(with: credentials)
         
         // Then
-        XCTAssertEqual(user.email, credentials.email)
-        XCTAssertEqual(user.name, "Peter Petersen")
-        XCTAssertTrue(authManager.isAuthenticated)
-        XCTAssertNotNil(authManager.currentUser)
+        #expect(user.email == credentials.email)
+        #expect(user.name == "Peter Petersen")
+        #expect(manager.isAuthenticated)
+        #expect(manager.currentUser != nil)
     }
     
+    @Test("Sign in updates authentication state")
     @MainActor
-    func testSignInUpdatesAuthenticationState() async throws {
+    func signInUpdatesAuthenticationState() async throws {
         // Given
-        XCTAssertFalse(authManager.isAuthenticated)
+        let manager = authManager
+        #expect(!manager.isAuthenticated)
         let credentials = AuthCredentials(email: "test@example.com", password: "password123")
         
         // When
-        _ = try await authManager.signIn(with: credentials)
+        _ = try await manager.signIn(with: credentials)
         
         // Then
-        XCTAssertTrue(authManager.isAuthenticated)
+        #expect(manager.isAuthenticated)
     }
     
     // MARK: - Sign Up Tests
     
+    @Test("Sign up with new user")
     @MainActor
-    func testSignUpSuccess() async throws {
+    func signUpSuccess() async throws {
         // Given
         let credentials = AuthCredentials(email: "newuser@example.com", password: "password123")
         let name = "New User"
+        let manager = authManager
         
         // When
-        let user = try await authManager.signUp(with: credentials, name: name)
+        let user = try await manager.signUp(with: credentials, name: name)
         
         // Then
-        XCTAssertEqual(user.email, credentials.email)
-        XCTAssertEqual(user.name, name)
-        XCTAssertTrue(authManager.isAuthenticated)
-        XCTAssertNotNil(authManager.currentUser)
+        #expect(user.email == credentials.email)
+        #expect(user.name == name)
+        #expect(manager.isAuthenticated)
+        #expect(manager.currentUser != nil)
     }
     
     // MARK: - Sign Out Tests
     
-    func testSignOutSuccess() throws {
-        // Given - Set up authenticated state
-        authManager.currentUser = AuthUser(id: "1", email: "test@example.com", name: "Test User")
-        authManager.setValue("mock-token", forKey: "authToken")
-        XCTAssertTrue(authManager.isAuthenticated)
+    @Test("Sign out clears authentication")
+    @MainActor
+    func signOutSuccess() async throws {
+        // Given - Set up authenticated state by signing in
+        let manager = authManager
+        let credentials = AuthCredentials(email: "test@example.com", password: "password123")
+        _ = try await manager.signIn(with: credentials)
+        #expect(manager.isAuthenticated)
         
         // When
-        try authManager.signOut()
+        try manager.signOut()
         
         // Then
-        XCTAssertFalse(authManager.isAuthenticated)
-        XCTAssertNil(authManager.currentUser)
+        #expect(!manager.isAuthenticated)
+        #expect(manager.currentUser == nil)
     }
     
     // MARK: - Token Tests
     
-    func testGetTokenWhenAuthenticated() throws {
-        // Given - Mock authenticated state
-        authManager.currentUser = AuthUser(id: "1", email: "test@example.com", name: "Test User")
-        authManager.setValue("mock-token-123", forKey: "authToken")
+    @Test("Get token returns hardcoded value")
+    @MainActor
+    func getTokenWhenAuthenticated() async throws {
+        // Given - Sign in to set authenticated state
+        let manager = authManager
+        let credentials = AuthCredentials(email: "test@example.com", password: "password123")
+        _ = try await manager.signIn(with: credentials)
         
         // When/Then - Currently returns hardcoded value
-        let token = try authManager.getToken()
-        XCTAssertEqual(token, "ABD#$DFRG$^")
+        let token = try manager.getToken()
+        #expect(token == "ABD#$DFRG$^")
     }
     
-    func testGetTokenWhenNotAuthenticated() throws {
+    @Test("Get token works when not authenticated")
+    func getTokenWhenNotAuthenticated() throws {
         // Given
-        XCTAssertFalse(authManager.isAuthenticated)
+        let manager = authManager
+        #expect(!manager.isAuthenticated)
         
         // When/Then - Currently returns hardcoded value regardless of auth state
-        let token = try authManager.getToken()
-        XCTAssertEqual(token, "ABD#$DFRG$^")
+        let token = try manager.getToken()
+        #expect(token == "ABD#$DFRG$^")
     }
 }
 

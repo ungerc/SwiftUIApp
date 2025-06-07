@@ -10,6 +10,7 @@ public class WorkoutService: WorkoutServiceProtocol {
     }
     private let baseURL = "https://api.fitjourney.com/workouts"
     
+    @MainActor
     public func fetchWorkouts() async throws -> [Workout] {
         guard let _ = try? authService.getToken() else {
             throw FitnessAuthError.notAuthenticated
@@ -20,6 +21,7 @@ public class WorkoutService: WorkoutServiceProtocol {
         return mockWorkouts
     }
     
+    @MainActor
     public func addWorkout(_ workout: Workout) async throws -> Workout {
         guard let _ = try? authService.getToken() else {
             throw FitnessAuthError.notAuthenticated
@@ -30,6 +32,7 @@ public class WorkoutService: WorkoutServiceProtocol {
         return workout
     }
     
+    @MainActor
     public func deleteWorkout(id: String) async throws {
         guard let _ = try? authService.getToken() else {
             throw FitnessAuthError.notAuthenticated

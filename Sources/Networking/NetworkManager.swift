@@ -1,13 +1,21 @@
 import Foundation
 
+/// Errors that can occur during network operations.
 public enum NetworkError: Error {
+    /// The provided URL string could not be converted to a valid URL
     case invalidURL
+    /// The network request failed with an underlying error
     case requestFailed(Error)
+    /// The server returned a non-success status code
     case invalidResponse
+    /// Failed to decode the response data into the expected type
     case decodingFailed(Error)
 }
 
+/// Concrete implementation of NetworkServiceProtocol using URLSession.
+/// Handles all network communication for the app.
 public class NetworkManager: NetworkServiceProtocol {
+    /// Creates a new NetworkManager instance.
     public init() {}
     
     public func fetch<T: Decodable>(from urlString: String) async throws -> T {

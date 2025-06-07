@@ -1,133 +1,139 @@
-import XCTest
+import Testing
+import Foundation
 @testable import Authentication
 
+@Suite("AuthViewModel Tests")
 @MainActor
-final class AuthViewModelTests: XCTestCase {
-    var viewModel: AuthViewModel!
-    var mockAuthService: MockAuthService!
-    
-    override func setUp() {
-        super.setUp()
-        mockAuthService = MockAuthService()
-        viewModel = AuthViewModel(authService: mockAuthService)
-    }
-    
-    override func tearDown() {
-        viewModel = nil
-        mockAuthService = nil
-        super.tearDown()
+struct AuthViewModelTests {
+    let mockAuthService = MockAuthService()
+    var viewModel: AuthViewModel {
+        AuthViewModel(authService: mockAuthService)
     }
     
     // MARK: - Sign In Tests
     
-    func testSignInSuccess() async {
+    @Test("Sign in successfully")
+    func signInSuccess() async {
         // Given
         mockAuthService.signInResult = .success(AuthUser(id: "1", email: "test@example.com", name: "Test User"))
+        let vm = viewModel
         
         // When
-        await viewModel.signIn(email: "test@example.com", password: "password123")
+        await vm.signIn(email: "test@example.com", password: "password123")
         
         // Then
-        XCTAssertFalse(viewModel.isLoading)
-        XCTAssertNil(viewModel.errorMessage)
-        XCTAssertTrue(viewModel.isAuthenticated)
+        #expect(!vm.isLoading)
+        #expect(vm.errorMessage == nil)
+        #expect(vm.isAuthenticated)
     }
     
-    func testSignInFailure() async {
+    @Test("Sign in with invalid credentials")
+    func signInFailure() async {
         // Given
         mockAuthService.signInResult = .failure(AuthError.signInFailed)
+        let vm = viewModel
         
         // When
-        await viewModel.signIn(email: "test@example.com", password: "wrongpassword")
+        await vm.signIn(email: "test@example.com", password: "wrongpassword")
         
         // Then
-        XCTAssertFalse(viewModel.isLoading)
-        XCTAssertEqual(viewModel.errorMessage, "Failed to sign in. Please check your credentials.")
-        XCTAssertFalse(viewModel.isAuthenticated)
+        #expect(!vm.isLoading)
+        #expect(vm.errorMessage == "Failed to sign in. Please check your credentials.")
+        #expect(!vm.isAuthenticated)
     }
     
-    func testSignInSetsLoadingState() async {
+    @Test("Sign in sets loading state")
+    func signInSetsLoadingState() async {
         // Given
         mockAuthService.signInDelay = 0.1
+        let vm = viewModel
         
         // When
         let signInTask = Task {
-            await viewModel.signIn(email: "test@example.com", password: "password123")
+            await vm.signIn(email: "test@example.com", password: "password123")
         }
         
         // Then - Check loading state is set immediately
         try? await Task.sleep(nanoseconds: 10_000_000) // 0.01 seconds
-        XCTAssertTrue(viewModel.isLoading)
+        #expect(vm.isLoading)
         
         await signInTask.value
-        XCTAssertFalse(viewModel.isLoading)
+        #expect(!vm.isLoading)
     }
     
     // MARK: - Sign Up Tests
     
-    func testSignUpSuccess() async {
+    @Test("Sign up new user")
+    func signUpSuccess() async {
         // Given
         mockAuthService.signUpResult = .success(AuthUser(id: "1", email: "new@example.com", name: "New User"))
+        let vm = viewModel
         
         // When
-        await viewModel.signUp(name: "New User", email: "new@example.com", password: "password123")
+        await vm.signUp(name: "New User", email: "new@example.com", password: "password123")
         
         // Then
-        XCTAssertFalse(viewModel.isLoading)
-        XCTAssertNil(viewModel.errorMessage)
-        XCTAssertTrue(viewModel.isAuthenticated)
+        #expect(!vm.isLoading)
+        #expect(vm.errorMessage == nil)
+        #expect(vm.isAuthenticated)
     }
     
-    func testSignUpFailure() async {
+    @Test("Sign up fails with error")
+    func signUpFailure() async {
         // Given
         mockAuthService.signUpResult = .failure(AuthError.signUpFailed)
+        let vm = viewModel
         
         // When
-        await viewModel.signUp(name: "New User", email: "new@example.com", password: "password123")
+        await vm.signUp(name: "New User", email: "new@example.com", password: "password123")
         
         // Then
-        XCTAssertFalse(viewModel.isLoading)
-        XCTAssertEqual(viewModel.errorMessage, "Failed to create account. Please try again.")
-        XCTAssertFalse(viewModel.isAuthenticated)
+        #expect(!vm.isLoading)
+        #expect(vm.errorMessage == "Failed to create account. Please try again.")
+        #expect(!vm.isAuthenticated)
     }
     
     // MARK: - Sign Out Tests
     
-    func testSignOutSuccess() {
+    @Test("Sign out successfully")
+    func signOutSuccess() {
         // Given
         mockAuthService.isAuthenticated = true
+        let vm = viewModel
         
         // When
-        viewModel.signOut()
+        vm.signOut()
         
         // Then
-        XCTAssertNil(viewModel.errorMessage)
-        XCTAssertFalse(mockAuthService.isAuthenticated)
+        #expect(vm.errorMessage == nil)
+        #expect(!mockAuthService.isAuthenticated)
     }
     
-    func testSignOutFailure() {
+    @Test("Sign out fails with error")
+    func signOutFailure() {
         // Given
         mockAuthService.signOutShouldThrow = true
+        let vm = viewModel
         
         // When
-        viewModel.signOut()
+        vm.signOut()
         
         // Then
-        XCTAssertEqual(viewModel.errorMessage, "Failed to sign out.")
+        #expect(vm.errorMessage == "Failed to sign out.")
     }
 }
 
 // MARK: - Mock Auth Service
 
-@MainActor
 class MockAuthService: AuthServiceProtocol {
-    var isAuthenticated = false
-    var currentUser: AuthUser?
+    nonisolated var isAuthenticated = false
+    nonisolated var currentUser: AuthUser?
     var signInResult: Result<AuthUser, Error> = .success(AuthUser(id: "1", email: "test@example.com", name: "Test User"))
     var signUpResult: Result<AuthUser, Error> = .success(AuthUser(id: "1", email: "test@example.com", name: "Test User"))
     var signOutShouldThrow = false
     var signInDelay: TimeInterval = 0
     
+    @MainActor
     func signIn(with credentials: AuthCredentials) async throws -> AuthUser {
         if signInDelay > 0 {
             try? await Task.sleep(nanoseconds: UInt64(signInDelay * 1_000_000_000))
@@ -143,6 +149,7 @@ class MockAuthService: AuthServiceProtocol {
         }
     }
     
+    @MainActor
     func signUp(with credentials: AuthCredentials, name: String) async throws -> AuthUser {
         switch signUpResult {
         case .success(let user):
@@ -154,7 +161,7 @@ class MockAuthService: AuthServiceProtocol {
         }
     }
     
-    func signOut() throws {
+    nonisolated func signOut() throws {
         if signOutShouldThrow {
             throw AuthError.signOutFailed
         }
@@ -162,7 +169,7 @@ class MockAuthService: AuthServiceProtocol {
         self.isAuthenticated = false
     }
     
-    func getToken() throws -> String {
+    nonisolated func getToken() throws -> String {
         return "mock-token"
     }
 }
