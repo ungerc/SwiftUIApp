@@ -1,5 +1,5 @@
 import Testing
-@testable import FitnessTracker
+@testable import Benefit
 
 @Suite("GoalViewModel Tests")
 @MainActor

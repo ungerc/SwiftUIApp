@@ -2,7 +2,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "FitJourney",
+    name: "Modules",
     platforms: [
         .iOS(.v17),
         .macOS(.v14)
@@ -12,8 +12,8 @@ let package = Package(
             name: "Authentication",
             targets: ["Authentication"]),
         .library(
-            name: "FitnessTracker",
-            targets: ["FitnessTracker"]),
+            name: "Benefit",
+            targets: ["Benefit"]),
         .library(
             name: "Networking",
             targets: ["Networking"])
@@ -26,19 +26,14 @@ let package = Package(
             path: "Sources/Authentication",
             swiftSettings: [.enableExperimentalFeature("StrictConcurrency")]),
         .target(
-            name: "FitnessTracker",
+            name: "Benefit",
             dependencies: [],
-            path: "Sources/FitnessTracker",
+            path: "Sources/Benefit",
             swiftSettings: [.enableExperimentalFeature("StrictConcurrency")]),
         .target(
             name: "Networking",
             dependencies: [],
             path: "Sources/Networking",
             swiftSettings: [.enableExperimentalFeature("StrictConcurrency")]),
-        // Test targets
-        .testTarget(
-            name: "AuthenticationTests",
-            dependencies: ["Authentication"],
-            path: "Tests/AuthenticationTests")
     ]
 )
