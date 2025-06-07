@@ -1,5 +1,16 @@
 import Foundation
 
+/// Service responsible for managing fitness goals.
+/// 
+/// This service handles:
+/// - Fetching goals from local storage (will use API when backend is ready)
+/// - Adding new goals
+/// - Updating goal progress
+/// - Deleting goals
+/// - Persisting goal data locally
+/// 
+/// Currently uses UserDefaults for persistence, but is designed to easily
+/// switch to a network-based backend when available.
 public class GoalService: GoalServiceProtocol {
     private let networkService: FitnessNetworkService
     private let authService: FitnessAuthService

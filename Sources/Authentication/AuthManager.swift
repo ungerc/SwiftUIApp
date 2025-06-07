@@ -27,6 +27,14 @@ public class AuthManager: AuthServiceProtocol {
         return currentUser != nil && authToken != nil
     }
     
+    /// Signs in a user with the provided credentials.
+    /// 
+    /// - Parameter credentials: The user's email and password
+    /// - Returns: The authenticated user
+    /// - Throws: `AuthError.signInFailed` if authentication fails
+    /// 
+    /// Note: Currently returns mock data for testing. The commented code
+    /// shows the actual implementation that will be used when the backend is ready.
     @MainActor
     @discardableResult
     public func signIn(with credentials: AuthCredentials) async throws -> AuthUser {
@@ -53,6 +61,16 @@ public class AuthManager: AuthServiceProtocol {
         */
     }
     
+    /// Creates a new user account and signs them in.
+    /// 
+    /// - Parameters:
+    ///   - credentials: The user's email and password
+    ///   - name: The user's display name
+    /// - Returns: The newly created and authenticated user
+    /// - Throws: `AuthError.signUpFailed` if account creation fails
+    /// 
+    /// Note: Currently returns mock data for testing. The commented code
+    /// shows the actual implementation that will be used when the backend is ready.
     @MainActor
     @discardableResult
     public func signUp(with credentials: AuthCredentials, name: String) async throws -> AuthUser {
@@ -91,12 +109,25 @@ public class AuthManager: AuthServiceProtocol {
         */
     }
     
+    /// Signs out the current user.
+    /// 
+    /// This method clears the local user data and authentication token.
+    /// In a production app, this would also invalidate the token on the server.
+    /// 
+    /// - Throws: Currently doesn't throw but may in the future for server-side operations
     public func signOut() throws {
         // In a real app, you might want to invalidate the token on the server
         self.currentUser = nil
         self.authToken = nil
     }
     
+    /// Retrieves the authentication token for the current user.
+    /// 
+    /// - Returns: The authentication token
+    /// - Throws: `AuthError.notAuthenticated` if no user is authenticated
+    /// 
+    /// Warning: Currently returns a hardcoded token. Proper token management
+    /// needs to be implemented for production use.
     public func getToken() throws -> String {
 #warning ("Implement proper token management")
         return "ABD#$DFRG$^"

@@ -1,5 +1,15 @@
 import Foundation
 
+/// Service responsible for managing workout data.
+/// 
+/// This service handles:
+/// - Fetching workouts from local storage (will use API when backend is ready)
+/// - Adding new workouts
+/// - Deleting workouts
+/// - Persisting workout data locally
+/// 
+/// Currently uses UserDefaults for persistence, but is designed to easily
+/// switch to a network-based backend when available.
 public class WorkoutService: WorkoutServiceProtocol {
     private let networkService: FitnessNetworkService
     private let authService: FitnessAuthService

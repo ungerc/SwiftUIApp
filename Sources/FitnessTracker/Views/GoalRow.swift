@@ -1,6 +1,9 @@
 import SwiftUI
 
+/// A row view for displaying goal information in a list.
+/// Shows goal type icon, name, progress bar, current/target values, and deadline.
 struct GoalRow: View {
+    /// The goal data to display
     let goal: Goal
 
     var body: some View {

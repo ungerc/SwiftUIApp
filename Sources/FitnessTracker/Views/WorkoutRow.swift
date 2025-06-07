@@ -1,6 +1,9 @@
 import SwiftUI
 
+/// A row view for displaying workout information in a list.
+/// Shows workout type icon, name, date, calories, and duration.
 struct WorkoutRow: View {
+    /// The workout data to display
     let workout: Workout
 
     var body: some View {
