@@ -3,10 +3,17 @@ import Foundation
 public class WorkoutService: WorkoutServiceProtocol {
     private let networkService: FitnessNetworkService
     private let authService: FitnessAuthService
+    private let userDefaults = UserDefaults.standard
+    private let workoutsKey = "com.fitjourney.workouts"
     
     public init(networkService: FitnessNetworkService, authService: FitnessAuthService) {
         self.networkService = networkService
         self.authService = authService
+        
+        // Initialize with mock data if no data exists
+        if loadWorkoutsFromStorage().isEmpty {
+            saveWorkoutsToStorage(mockWorkouts)
+        }
     }
     private let baseURL = "https://api.fitjourney.com/workouts"
     
@@ -16,9 +23,8 @@ public class WorkoutService: WorkoutServiceProtocol {
             throw FitnessAuthError.notAuthenticated
         }
         
-        // In a real app, you would include the token in the request
-        // For now, we'll return mock data
-        return mockWorkouts
+        // Load from local storage
+        return loadWorkoutsFromStorage()
     }
     
     @MainActor
@@ -27,8 +33,11 @@ public class WorkoutService: WorkoutServiceProtocol {
             throw FitnessAuthError.notAuthenticated
         }
         
-        // In a real app, you would send the workout to the server
-        // For now, we'll just return the workout
+        // Add to local storage
+        var workouts = loadWorkoutsFromStorage()
+        workouts.append(workout)
+        saveWorkoutsToStorage(workouts)
+        
         return workout
     }
     
@@ -38,8 +47,26 @@ public class WorkoutService: WorkoutServiceProtocol {
             throw FitnessAuthError.notAuthenticated
         }
         
-        // In a real app, you would send a delete request to the server
-        // For now, we'll just return
+        // Remove from local storage
+        var workouts = loadWorkoutsFromStorage()
+        workouts.removeAll { $0.id == id }
+        saveWorkoutsToStorage(workouts)
+    }
+    
+    // MARK: - Persistence Methods
+    
+    private func loadWorkoutsFromStorage() -> [Workout] {
+        guard let data = userDefaults.data(forKey: workoutsKey),
+              let workouts = try? JSONDecoder().decode([Workout].self, from: data) else {
+            return []
+        }
+        return workouts
+    }
+    
+    private func saveWorkoutsToStorage(_ workouts: [Workout]) {
+        if let data = try? JSONEncoder().encode(workouts) {
+            userDefaults.set(data, forKey: workoutsKey)
+        }
     }
     
     // Mock data for demonstration

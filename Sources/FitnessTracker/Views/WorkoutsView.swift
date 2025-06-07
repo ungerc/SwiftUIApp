@@ -7,8 +7,7 @@ public struct WorkoutsView: View {
     public init() {}
     
     public var body: some View {
-        NavigationView {
-            List {
+        List {
                 if workoutViewModel.workouts.isEmpty {
                     Text("No workouts recorded yet")
                         .foregroundColor(.gray)
@@ -20,30 +19,40 @@ public struct WorkoutsView: View {
                             WorkoutRow(workout: workout)
                         }
                     }
-                }
-            }
-            .navigationTitle("Workouts")
-            .toolbar {
-                ToolbarItem(placement: .automatic) {
-                    Button(action: {
-                        showingAddWorkout = true
-                    }) {
-                        Image(systemName: "plus")
+                    .onDelete { indexSet in
+                        Task {
+                            for index in indexSet {
+                                let workout = workoutViewModel.workouts[index]
+                                await workoutViewModel.deleteWorkout(id: workout.id)
+                            }
+                        }
                     }
                 }
-            }
-            .sheet(isPresented: $showingAddWorkout) {
-                AddWorkoutView()
-                    .environment(workoutViewModel)
-            }
-            .refreshable {
-                await workoutViewModel.fetchWorkouts()
-            }
-            .overlay {
-                if workoutViewModel.isLoading {
-                    ProgressView()
-                        .scaleEffect(1.5)
+        }
+        .navigationTitle("Workouts")
+        .toolbar {
+            ToolbarItem(placement: .automatic) {
+                Button(action: {
+                    showingAddWorkout = true
+                }) {
+                    Image(systemName: "plus")
                 }
+            }
+        }
+        .sheet(isPresented: $showingAddWorkout) {
+            AddWorkoutView()
+                .environment(workoutViewModel)
+        }
+        .task {
+            await workoutViewModel.fetchWorkouts()
+        }
+        .refreshable {
+            await workoutViewModel.fetchWorkouts()
+        }
+        .overlay {
+            if workoutViewModel.isLoading {
+                ProgressView()
+                    .scaleEffect(1.5)
             }
         }
     }

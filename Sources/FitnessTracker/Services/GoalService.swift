@@ -3,10 +3,17 @@ import Foundation
 public class GoalService: GoalServiceProtocol {
     private let networkService: FitnessNetworkService
     private let authService: FitnessAuthService
+    private let userDefaults = UserDefaults.standard
+    private let goalsKey = "com.fitjourney.goals"
     
     public init(networkService: FitnessNetworkService, authService: FitnessAuthService) {
         self.networkService = networkService
         self.authService = authService
+        
+        // Initialize with mock data if no data exists
+        if loadGoalsFromStorage().isEmpty {
+            saveGoalsToStorage(mockGoals)
+        }
     }
     private let baseURL = "https://api.fitjourney.com/goals"
     
@@ -16,9 +23,8 @@ public class GoalService: GoalServiceProtocol {
             throw FitnessAuthError.notAuthenticated
         }
         
-        // In a real app, you would include the token in the request
-        // For now, we'll return mock data
-        return mockGoals
+        // Load from local storage
+        return loadGoalsFromStorage()
     }
     
     @MainActor
@@ -27,8 +33,11 @@ public class GoalService: GoalServiceProtocol {
             throw FitnessAuthError.notAuthenticated
         }
         
-        // In a real app, you would send the goal to the server
-        // For now, we'll just return the goal
+        // Add to local storage
+        var goals = loadGoalsFromStorage()
+        goals.append(goal)
+        saveGoalsToStorage(goals)
+        
         return goal
     }
     
@@ -38,18 +47,27 @@ public class GoalService: GoalServiceProtocol {
             throw FitnessAuthError.notAuthenticated
         }
         
-        // In a real app, you would update the goal on the server
-        // For now, we'll return a mock goal with updated progress
-        let mockGoal = mockGoals.first { $0.id == id }!
-        return Goal(
-            id: mockGoal.id,
-            name: mockGoal.name,
-            targetValue: mockGoal.targetValue,
+        // Update in local storage
+        var goals = loadGoalsFromStorage()
+        guard let index = goals.firstIndex(where: { $0.id == id }) else {
+            throw FitnessAuthError.notAuthenticated // Should be a different error
+        }
+        
+        let oldGoal = goals[index]
+        let updatedGoal = Goal(
+            id: oldGoal.id,
+            name: oldGoal.name,
+            targetValue: oldGoal.targetValue,
             currentValue: newValue,
-            unit: mockGoal.unit,
-            deadline: mockGoal.deadline,
-            type: mockGoal.type
+            unit: oldGoal.unit,
+            deadline: oldGoal.deadline,
+            type: oldGoal.type
         )
+        
+        goals[index] = updatedGoal
+        saveGoalsToStorage(goals)
+        
+        return updatedGoal
     }
     
     @MainActor
@@ -58,8 +76,26 @@ public class GoalService: GoalServiceProtocol {
             throw FitnessAuthError.notAuthenticated
         }
         
-        // In a real app, you would send a delete request to the server
-        // For now, we'll just return
+        // Remove from local storage
+        var goals = loadGoalsFromStorage()
+        goals.removeAll { $0.id == id }
+        saveGoalsToStorage(goals)
+    }
+    
+    // MARK: - Persistence Methods
+    
+    private func loadGoalsFromStorage() -> [Goal] {
+        guard let data = userDefaults.data(forKey: goalsKey),
+              let goals = try? JSONDecoder().decode([Goal].self, from: data) else {
+            return []
+        }
+        return goals
+    }
+    
+    private func saveGoalsToStorage(_ goals: [Goal]) {
+        if let data = try? JSONEncoder().encode(goals) {
+            userDefaults.set(data, forKey: goalsKey)
+        }
     }
     
     // Mock data for demonstration

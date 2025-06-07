@@ -1,8 +1,48 @@
 import SwiftUI
 
+// Simple confetti animation view
+struct ConfettiView: View {
+    @State private var animate = false
+    
+    var body: some View {
+        ZStack {
+            ForEach(0..<50) { index in
+                ConfettiPiece()
+                    .offset(y: animate ? 600 : -100)
+                    .animation(
+                        Animation.linear(duration: Double.random(in: 2...3))
+                            .repeatCount(1, autoreverses: false)
+                            .delay(Double.random(in: 0...0.5)),
+                        value: animate
+                    )
+            }
+        }
+        .onAppear {
+            animate = true
+        }
+    }
+}
+
+struct ConfettiPiece: View {
+    private let colors: [Color] = [.red, .blue, .green, .yellow, .orange, .purple, .pink]
+    private let size = Double.random(in: 8...16)
+    private let xPosition = Double.random(in: -200...200)
+    private let xMovement = Double.random(in: -100...100)
+    private let rotation = Double.random(in: 0...360)
+    
+    var body: some View {
+        Rectangle()
+            .fill(colors.randomElement()!)
+            .frame(width: size, height: size)
+            .offset(x: xPosition + xMovement)
+            .rotationEffect(.degrees(rotation))
+    }
+}
+
 struct GoalDetailView: View {
     let goal: Goal
     @State private var updatedValue: Double
+    @State private var showingConfetti = false
     @Environment(GoalViewModel.self) private var goalViewModel
 
     init(goal: Goal) {
@@ -119,6 +159,13 @@ struct GoalDetailView: View {
         #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
         #endif
+        .overlay {
+            if showingConfetti {
+                ConfettiView()
+                    .allowsHitTesting(false)
+                    .ignoresSafeArea()
+            }
+        }
     }
     
     private var progressColor: Color {
@@ -136,6 +183,16 @@ struct GoalDetailView: View {
     private func updateGoalProgress() {
         Task {
             await goalViewModel.updateGoalProgress(id: goal.id, newValue: updatedValue)
+            
+            // Show confetti if goal is completed
+            if updatedValue >= goal.targetValue && goal.currentValue < goal.targetValue {
+                showingConfetti = true
+                
+                // Hide confetti after 3 seconds
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                    showingConfetti = false
+                }
+            }
         }
     }
 }

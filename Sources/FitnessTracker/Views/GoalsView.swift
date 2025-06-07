@@ -7,8 +7,7 @@ public struct GoalsView: View {
     public init() {}
     
     public var body: some View {
-        NavigationView {
-            List {
+        List {
                 if goalViewModel.goals.isEmpty {
                     Text("No goals set yet")
                         .foregroundColor(.gray)
@@ -17,8 +16,16 @@ public struct GoalsView: View {
                 } else {
                     Section(header: Text("In Progress")) {
                         ForEach(goalViewModel.inProgressGoals) { goal in
-                            NavigationLink(destination: GoalDetailView(goal: goal)) {
+                            NavigationLink(destination: GoalDetailView(goal: goal).environment(goalViewModel)) {
                                 GoalRow(goal: goal)
+                            }
+                        }
+                        .onDelete { indexSet in
+                            Task {
+                                for index in indexSet {
+                                    let goal = goalViewModel.inProgressGoals[index]
+                                    await goalViewModel.deleteGoal(id: goal.id)
+                                }
                             }
                         }
                     }
@@ -26,36 +33,46 @@ public struct GoalsView: View {
                     if !goalViewModel.completedGoals.isEmpty {
                         Section(header: Text("Completed")) {
                             ForEach(goalViewModel.completedGoals) { goal in
-                                NavigationLink(destination: GoalDetailView(goal: goal)) {
+                                NavigationLink(destination: GoalDetailView(goal: goal).environment(goalViewModel)) {
                                     GoalRow(goal: goal)
+                                }
+                            }
+                            .onDelete { indexSet in
+                                Task {
+                                    for index in indexSet {
+                                        let goal = goalViewModel.completedGoals[index]
+                                        await goalViewModel.deleteGoal(id: goal.id)
+                                    }
                                 }
                             }
                         }
                     }
                 }
-            }
-            .navigationTitle("Goals")
-            .toolbar {
-                ToolbarItem(placement: .automatic) {
-                    Button(action: {
-                        showingAddGoal = true
-                    }) {
-                        Image(systemName: "plus")
-                    }
+        }
+        .navigationTitle("Goals")
+        .toolbar {
+            ToolbarItem(placement: .automatic) {
+                Button(action: {
+                    showingAddGoal = true
+                }) {
+                    Image(systemName: "plus")
                 }
             }
-            .sheet(isPresented: $showingAddGoal) {
-                AddGoalView()
-                    .environment(goalViewModel)
-            }
-            .refreshable {
-                await goalViewModel.fetchGoals()
-            }
-            .overlay {
-                if goalViewModel.isLoading {
-                    ProgressView()
-                        .scaleEffect(1.5)
-                }
+        }
+        .sheet(isPresented: $showingAddGoal) {
+            AddGoalView()
+                .environment(goalViewModel)
+        }
+        .refreshable {
+            await goalViewModel.fetchGoals()
+        }
+        .task {
+            await goalViewModel.fetchGoals()
+        }
+        .overlay {
+            if goalViewModel.isLoading {
+                ProgressView()
+                    .scaleEffect(1.5)
             }
         }
     }
