@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct AddGoalView: View {
+public struct AddGoalView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(GoalViewModel.self) private var goalViewModel
 
@@ -11,7 +11,9 @@ struct AddGoalView: View {
     @State private var hasDeadline = false
     @State private var deadline = Calendar.current.date(byAdding: .month, value: 1, to: Date()) ?? Date()
     
-    var body: some View {
+    public init() {}
+    
+    public var body: some View {
         NavigationView {
             Form {
                 Section(header: Text("Goal Details")) {

@@ -1,9 +1,13 @@
 import SwiftUI
 
-struct WorkoutDetailView: View {
+public struct WorkoutDetailView: View {
     let workout: Workout
 
-    var body: some View {
+    public init(workout: Workout) {
+        self.workout = workout
+    }
+    
+    public var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
                 // Header
@@ -11,25 +15,25 @@ struct WorkoutDetailView: View {
                     Text(workout.name)
                         .font(.largeTitle)
                         .fontWeight(.bold)
-                    
+
                     HStack {
                         Image(systemName: workout.type.icon)
                             .foregroundColor(.blue)
-                        
+
                         Text(workout.type.rawValue.capitalized)
                             .foregroundColor(.secondary)
                     }
                 }
                 .padding(.horizontal)
-                
+
                 // Date and time
                 VStack(alignment: .leading, spacing: 5) {
                     Text("Date & Time")
                         .font(.headline)
-                    
+
                     Text(workout.date, style: .date)
                         .font(.subheadline)
-                    
+
                     Text(workout.date, style: .time)
                         .font(.subheadline)
                 }
@@ -38,7 +42,7 @@ struct WorkoutDetailView: View {
                 .background(Color.gray.opacity(0.1))
                 .cornerRadius(12)
                 .padding(.horizontal)
-                
+
                 // Stats
                 HStack(spacing: 15) {
                     StatCard(
@@ -47,7 +51,7 @@ struct WorkoutDetailView: View {
                         icon: "clock",
                         color: .blue
                     )
-                    
+
                     StatCard(
                         title: "Calories",
                         value: "\(Int(workout.caloriesBurned))",
@@ -56,12 +60,12 @@ struct WorkoutDetailView: View {
                     )
                 }
                 .padding(.horizontal)
-                
+
                 // Additional info (placeholder)
                 VStack(alignment: .leading, spacing: 5) {
                     Text("Notes")
                         .font(.headline)
-                    
+
                     Text("This was a great workout session!")
                         .font(.subheadline)
                 }
@@ -74,15 +78,15 @@ struct WorkoutDetailView: View {
             .padding(.vertical)
         }
         .navigationTitle("Workout Details")
-        #if os(iOS)
+#if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
-        #endif
+#endif
     }
-    
+
     private func formatDuration(_ duration: TimeInterval) -> String {
         let hours = Int(duration) / 3600
         let minutes = (Int(duration) % 3600) / 60
-        
+
         if hours > 0 {
             return "\(hours)h \(minutes)m"
         } else {
@@ -91,30 +95,3 @@ struct WorkoutDetailView: View {
     }
 }
 
-struct StatCard: View {
-    let title: String
-    let value: String
-    let icon: String
-    let color: Color
-    
-    var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            HStack {
-                Image(systemName: icon)
-                    .foregroundColor(color)
-                
-                Text(title)
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
-            }
-            
-            Text(value)
-                .font(.title2)
-                .fontWeight(.bold)
-        }
-        .padding()
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Color.gray.opacity(0.1))
-        .cornerRadius(12)
-    }
-}

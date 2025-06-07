@@ -52,10 +52,6 @@ public struct AuthView: View {
     }
 }
 
-private struct AuthAlert: Identifiable {
-    var id: String { message }
-    let message: String
-}
 
 #Preview {
     AuthView()
