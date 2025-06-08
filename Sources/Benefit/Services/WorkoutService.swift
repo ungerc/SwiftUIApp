@@ -29,7 +29,7 @@ public class WorkoutService: WorkoutServiceProtocol {
     
     @MainActor
     public func fetchWorkouts() async throws -> [Workout] {
-        guard let _ = try? authService.getToken() else {
+        guard let _ = try? await authService.getToken() else {
             throw FitnessAuthError.notAuthenticated
         }
         
@@ -39,7 +39,7 @@ public class WorkoutService: WorkoutServiceProtocol {
     
     @MainActor
     public func addWorkout(_ workout: Workout) async throws -> Workout {
-        guard let _ = try? authService.getToken() else {
+        guard let _ = try? await authService.getToken() else {
             throw FitnessAuthError.notAuthenticated
         }
         
@@ -53,7 +53,7 @@ public class WorkoutService: WorkoutServiceProtocol {
     
     @MainActor
     public func deleteWorkout(id: String) async throws {
-        guard let _ = try? authService.getToken() else {
+        guard let _ = try? await authService.getToken() else {
             throw FitnessAuthError.notAuthenticated
         }
         

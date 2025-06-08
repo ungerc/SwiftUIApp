@@ -30,7 +30,7 @@ public class GoalService: GoalServiceProtocol {
     
     @MainActor
     public func fetchGoals() async throws -> [Goal] {
-        guard let _ = try? authService.getToken() else {
+        guard let _ = try? await authService.getToken() else {
             throw FitnessAuthError.notAuthenticated
         }
         
@@ -40,7 +40,7 @@ public class GoalService: GoalServiceProtocol {
     
     @MainActor
     public func addGoal(_ goal: Goal) async throws -> Goal {
-        guard let _ = try? authService.getToken() else {
+        guard let _ = try? await authService.getToken() else {
             throw FitnessAuthError.notAuthenticated
         }
         
@@ -54,7 +54,7 @@ public class GoalService: GoalServiceProtocol {
     
     @MainActor
     public func updateGoalProgress(id: String, newValue: Double) async throws -> Goal {
-        guard let _ = try? authService.getToken() else {
+        guard let _ = try? await authService.getToken() else {
             throw FitnessAuthError.notAuthenticated
         }
         
@@ -83,7 +83,7 @@ public class GoalService: GoalServiceProtocol {
     
     @MainActor
     public func deleteGoal(id: String) async throws {
-        guard let _ = try? authService.getToken() else {
+        guard let _ = try? await authService.getToken() else {
             throw FitnessAuthError.notAuthenticated
         }
         

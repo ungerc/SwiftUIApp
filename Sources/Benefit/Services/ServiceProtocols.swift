@@ -95,14 +95,14 @@ public protocol FitnessNetworkService {
 
 /// Protocol for authentication services used by the fitness tracker module.
 /// This is a subset of AuthServiceProtocol specific to fitness features.
-public protocol FitnessAuthService {
+public protocol FitnessAuthService: Actor {
     /// Indicates whether a user is currently authenticated
-    var isAuthenticated: Bool { get }
-    
+    var isAuthenticated: Bool { get async }
+
     /// Retrieves the authentication token for API requests.
     /// - Returns: The authentication token
     /// - Throws: Errors if no valid token is available
-    func getToken() throws -> String
+    func getToken() async throws -> String
 }
 
 /// Errors specific to fitness module authentication.
