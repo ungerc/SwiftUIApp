@@ -43,8 +43,8 @@ public struct AuthView: View {
             .navigationBarHidden(true)
             #endif
             .alert(item: Binding<AuthAlert?>(
-                get: { authViewModel.errorMessage != nil ? AuthAlert(message: authViewModel.errorMessage!) : nil },
-                set: { _ in authViewModel.errorMessage = nil }
+                get: { authViewModel.error != nil ? AuthAlert(message: authViewModel.error!.localizedDescription) : nil },
+                set: { _ in authViewModel.error = nil }
             )) { alert in
                 Alert(title: Text("Error"), message: Text(alert.message), dismissButton: .default(Text("OK")))
             }

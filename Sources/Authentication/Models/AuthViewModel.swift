@@ -15,8 +15,8 @@ public class AuthViewModel {
     
     /// Error message to display to the user, if any
     /// Set to nil when operations succeed or when starting new operations
-    public internal(set) var errorMessage: String?
-    
+    public internal(set) var error: Error?
+
     /// Whether the user is currently authenticated
     /// Delegates to the underlying auth service
     public var isAuthenticated: Bool {
@@ -41,13 +41,13 @@ public class AuthViewModel {
     
     public func signIn(email: String, password: String) async {
         isLoading = true
-        errorMessage = nil
-        
+        error = nil
+
         do {
             let credentials = AuthCredentials(email: email, password: password)
             _ = try await authService.signIn(with: credentials)
         } catch {
-            errorMessage = "Failed to sign in. Please check your credentials."
+            self.error = error
         }
         
         isLoading = false
@@ -55,23 +55,24 @@ public class AuthViewModel {
     
     public func signUp(name: String, email: String, password: String) async {
         isLoading = true
-        errorMessage = nil
+        error = nil
         
         do {
             let credentials = AuthCredentials(email: email, password: password)
             _ = try await authService.signUp(with: credentials, name: name)
         } catch {
-            errorMessage = "Failed to create account. Please try again."
+            self.error = error
         }
         
         isLoading = false
     }
     
     public func signOut() async {
+        error = nil
         do {
             try await authService.signOut()
         } catch {
-            errorMessage = "Failed to sign out."
+            self.error = error
         }
     }
 }

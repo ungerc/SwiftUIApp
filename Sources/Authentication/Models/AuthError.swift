@@ -11,3 +11,18 @@ public enum AuthError: Error {
     /// Thrown when attempting to access authenticated resources without being signed in
     case notAuthenticated
 }
+
+extension AuthError: LocalizedError {
+    public var localizedDescription: String? {
+        switch self {
+        case .signInFailed:
+            return "Sign in failed. Please check your credentials and try again."
+        case .signUpFailed:
+            return "Sign up failed. Please check your email address and try again."
+        case .signOutFailed:
+            return "Sign out failed. Please try again."
+        case .notAuthenticated:
+            return "You are not signed in."
+        }
+    }
+}

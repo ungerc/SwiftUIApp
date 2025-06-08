@@ -1,7 +1,7 @@
 import Foundation
 
 /// Main authentication manager that handles user authentication operations.
-/// This class manages the authentication state and provides methods for sign in, sign up, and sign out.
+/// This actor manages the authentication state and provides methods for sign in, sign up, and sign out.
 public actor AuthManager: AuthServiceProtocol {
     /// Network service used for making authentication API calls
     private let networkService: AuthNetworkService
