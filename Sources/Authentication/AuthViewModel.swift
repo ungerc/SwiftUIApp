@@ -20,13 +20,17 @@ public class AuthViewModel {
     /// Whether the user is currently authenticated
     /// Delegates to the underlying auth service
     public var isAuthenticated: Bool {
-        authService.isAuthenticated
+        get async {
+            await authService.isAuthenticated
+        }
     }
     
     /// The currently authenticated user, if any
     /// Delegates to the underlying auth service
     public var currentUser: AuthUser? {
-        authService.currentUser
+        get async {
+            await authService.currentUser
+        }
     }
     
     /// Creates a new AuthViewModel instance.
@@ -41,7 +45,7 @@ public class AuthViewModel {
         
         do {
             let credentials = AuthCredentials(email: email, password: password)
-            try await authService.signIn(with: credentials)
+            _ = try await authService.signIn(with: credentials)
         } catch {
             errorMessage = "Failed to sign in. Please check your credentials."
         }
@@ -55,7 +59,7 @@ public class AuthViewModel {
         
         do {
             let credentials = AuthCredentials(email: email, password: password)
-            try await authService.signUp(with: credentials, name: name)
+            _ = try await authService.signUp(with: credentials, name: name)
         } catch {
             errorMessage = "Failed to create account. Please try again."
         }
@@ -63,9 +67,9 @@ public class AuthViewModel {
         isLoading = false
     }
     
-    public func signOut() {
+    public func signOut() async {
         do {
-            try authService.signOut()
+            try await authService.signOut()
         } catch {
             errorMessage = "Failed to sign out."
         }

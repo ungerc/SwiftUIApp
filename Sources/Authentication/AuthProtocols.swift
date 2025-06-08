@@ -3,7 +3,7 @@ import Foundation
 /// Protocol defining the authentication service interface.
 /// This protocol abstracts the authentication functionality, allowing for different implementations
 /// and making the code more testable.
-public protocol AuthServiceProtocol {
+public protocol AuthServiceProtocol: Actor {
     /// Indicates whether a user is currently authenticated.
     /// - Returns: `true` if a user is signed in, `false` otherwise
     var isAuthenticated: Bool { get }

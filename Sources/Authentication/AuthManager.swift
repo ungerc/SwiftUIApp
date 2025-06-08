@@ -2,7 +2,7 @@ import Foundation
 
 /// Main authentication manager that handles user authentication operations.
 /// This class manages the authentication state and provides methods for sign in, sign up, and sign out.
-public class AuthManager: AuthServiceProtocol {
+public actor AuthManager: AuthServiceProtocol {
     /// Network service used for making authentication API calls
     private let networkService: AuthNetworkService
     
@@ -39,9 +39,9 @@ public class AuthManager: AuthServiceProtocol {
     @discardableResult
     public func signIn(with credentials: AuthCredentials) async throws -> AuthUser {
         // Temporarily using mock data for testing
-        self.currentUser = AuthUser(id: "1", email: credentials.email, name: "Peter Petersen")
-        self.authToken = "mock-token-123"
-        return self.currentUser!
+        await setUser(AuthUser(id: "1", email: credentials.email, name: "Peter Petersen"))
+        await setAuthToken("mock-token-123")
+        return await self.currentUser!
 
         // TODO: Uncomment when backend is ready
         /*
@@ -60,7 +60,14 @@ public class AuthManager: AuthServiceProtocol {
         }
         */
     }
-    
+
+    private func setAuthToken(_ token: String) {
+        authToken = token
+    }
+    private func setUser(_ user: AuthUser) {
+        currentUser = user
+    }
+
     /// Creates a new user account and signs them in.
     /// 
     /// - Parameters:
@@ -75,10 +82,10 @@ public class AuthManager: AuthServiceProtocol {
     @discardableResult
     public func signUp(with credentials: AuthCredentials, name: String) async throws -> AuthUser {
         // Temporarily using mock data for testing
-        self.currentUser = AuthUser(id: "1", email: credentials.email, name: name)
-        self.authToken = "mock-token-123"
-        return self.currentUser!
-        
+        await setUser(AuthUser(id: "1", email: credentials.email, name: name))
+        await setAuthToken("mock-token-123")
+        return await self.currentUser!
+
         // TODO: Uncomment when backend is ready
         /*
         struct SignUpRequest: Codable {
