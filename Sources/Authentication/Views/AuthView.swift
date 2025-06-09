@@ -7,6 +7,7 @@ public struct AuthView: View {
     public init() {}
     
     public var body: some View {
+        @Bindable var authViewModel = authViewModel
         NavigationView {
             VStack {
                 // Logo and app name
@@ -42,11 +43,12 @@ public struct AuthView: View {
             #if os(iOS)
             .navigationBarHidden(true)
             #endif
-            .alert(item: Binding<AuthAlert?>(
-                get: { authViewModel.error != nil ? AuthAlert(message: authViewModel.error!.localizedDescription) : nil },
-                set: { _ in authViewModel.error = nil }
-            )) { alert in
-                Alert(title: Text("Error"), message: Text(alert.message), dismissButton: .default(Text("OK")))
+            .alert(
+                item: $authViewModel.error
+            ) { error in
+                Alert(title: Text("Error"),
+                      message: Text(error.localizedDescription),
+                      dismissButton: .default(Text("OK")))
             }
         }
     }

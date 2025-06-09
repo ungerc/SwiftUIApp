@@ -1,7 +1,9 @@
 import Foundation
 
 /// Errors that can occur during authentication operations.
-public enum AuthError: Error {
+enum AuthError: Error, Identifiable {
+    public var id: Self { self }
+
     /// Thrown when sign in fails due to invalid credentials or network issues
     case signInFailed
     /// Thrown when account creation fails due to invalid data or existing account

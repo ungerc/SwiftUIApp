@@ -15,7 +15,7 @@ public class AuthViewModel {
     
     /// Error message to display to the user, if any
     /// Set to nil when operations succeed or when starting new operations
-    public internal(set) var error: Error?
+    var error: AuthError?
 
     /// Whether the user is currently authenticated
     /// Delegates to the underlying auth service
@@ -46,10 +46,13 @@ public class AuthViewModel {
         do {
             let credentials = AuthCredentials(email: email, password: password)
             _ = try await authService.signIn(with: credentials)
-        } catch {
+        } catch let error as AuthError {
             self.error = error
         }
-        
+        catch {
+
+        }
+
         isLoading = false
     }
     
@@ -60,10 +63,12 @@ public class AuthViewModel {
         do {
             let credentials = AuthCredentials(email: email, password: password)
             _ = try await authService.signUp(with: credentials, name: name)
-        } catch {
+        } catch let error as AuthError{
             self.error = error
+        } catch {
+
         }
-        
+
         isLoading = false
     }
     
@@ -71,8 +76,10 @@ public class AuthViewModel {
         error = nil
         do {
             try await authService.signOut()
-        } catch {
+        } catch let error as AuthError{
             self.error = error
+        } catch {
+
         }
     }
 }
