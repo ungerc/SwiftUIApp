@@ -6,7 +6,7 @@ import SwiftUI
 @MainActor
 public class GoalViewModel {
     /// The underlying goal service
-    private let goalService: GoalServiceProtocol
+    let goalService: GoalServiceProtocol
     
     /// Array of goals displayed in the UI
     public var goals: [Goal] = []
@@ -47,7 +47,11 @@ public class GoalViewModel {
         
         isLoading = false
     }
-    
+
+    func fetchGoal(id: String) async throws -> Goal? {
+        try await goalService.fetchGoals().first(where: { $0.id == id })
+    }
+
     public func addGoal(name: String, type: GoalType, targetValue: Double, currentValue: Double, unit: String, deadline: Date?) async {
         isLoading = true
         errorMessage = nil

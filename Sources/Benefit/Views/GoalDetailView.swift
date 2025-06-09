@@ -7,12 +7,11 @@ import SwiftUI
 /// - The goal detail view once loaded
 /// - An error state if the goal cannot be found
 public struct GoalDetailLoader: View {
+    @Environment(GoalViewModel.self) private var goalViewModel
     /// The ID of the goal to load
     let goalId: String
     /// Service for fetching goal data
     let goalService: GoalServiceProtocol
-    /// The goal view model that may already contain the goal
-    let goalViewModel: GoalViewModel
     /// The loaded goal, if found
     @State private var goal: Goal?
     /// Loading state flag
@@ -27,7 +26,6 @@ public struct GoalDetailLoader: View {
     ) {
         self.goalId = goalId
         self.goalService = goalService
-        self.goalViewModel = goalViewModel
     }
 
     public var body: some View {
@@ -36,7 +34,6 @@ public struct GoalDetailLoader: View {
                 ProgressView("Loading goal...")
             } else if let goal = goal {
                 GoalDetailView(goal: goal)
-                    .environment(goalViewModel)
             } else {
                 ContentUnavailableView("Goal Not Found",
                                      systemImage: "target",
@@ -54,9 +51,7 @@ public struct GoalDetailLoader: View {
             if let existingGoal = goalViewModel.goals.first(where: { $0.id == goalId }) {
                 goal = existingGoal
             } else {
-                // If not found, fetch all goals
-                let goals = try await goalService.fetchGoals()
-                goal = goals.first { $0.id == goalId }
+                goal = try await goalViewModel.fetchGoal(id: goalId)
             }
         } catch {
             self.error = error
