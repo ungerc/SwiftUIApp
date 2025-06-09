@@ -48,6 +48,19 @@ public class GoalViewModel {
         isLoading = false
     }
 
+    func loadGoal(id: String) async throws -> Goal? {
+        isLoading = true
+        defer {
+            isLoading = false
+        }
+        // First try to find in existing goals
+        if let existingGoal = goals.first(where: { $0.id == id }) {
+            return existingGoal
+        } else {
+            return try await fetchGoal(id: id)
+        }
+    }
+
     func fetchGoal(id: String) async throws -> Goal? {
         try await goalService.fetchGoals().first(where: { $0.id == id })
     }

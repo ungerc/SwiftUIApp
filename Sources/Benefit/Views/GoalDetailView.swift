@@ -10,27 +10,18 @@ public struct GoalDetailLoader: View {
     @Environment(GoalViewModel.self) private var goalViewModel
     /// The ID of the goal to load
     let goalId: String
-    /// Service for fetching goal data
-    let goalService: GoalServiceProtocol
     /// The loaded goal, if found
     @State private var goal: Goal?
-    /// Loading state flag
-    @State private var isLoading = true
     /// Error encountered during loading, if any
     @State private var error: Error?
 
-    public init(
-        goalId: String,
-        goalService: GoalServiceProtocol,
-        goalViewModel: GoalViewModel
-    ) {
+    public init(goalId: String) {
         self.goalId = goalId
-        self.goalService = goalService
     }
 
     public var body: some View {
         Group {
-            if isLoading {
+            if goalViewModel.isLoading {
                 ProgressView("Loading goal...")
             } else if let goal = goal {
                 GoalDetailView(goal: goal)
@@ -41,22 +32,12 @@ public struct GoalDetailLoader: View {
             }
         }
         .task {
-            await loadGoal()
-        }
-    }
-
-    private func loadGoal() async {
-        do {
-            // First try to find in existing goals
-            if let existingGoal = goalViewModel.goals.first(where: { $0.id == goalId }) {
-                goal = existingGoal
-            } else {
-                goal = try await goalViewModel.fetchGoal(id: goalId)
+            do {
+                goal = try await goalViewModel.loadGoal(id: goalId)
+            } catch {
+                self.error = error
             }
-        } catch {
-            self.error = error
         }
-        isLoading = false
     }
 }
 
